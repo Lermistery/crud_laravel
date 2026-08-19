@@ -49,11 +49,11 @@
 
             <!-- Navigation Links -->
             <nav class="space-y-1.5">
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-gray-400 hover:text-white rounded-xl transition">
+                <a href="{{ url('/dashboard') }}" class="flex items-center gap-3 px-3 py-2.5 text-gray-400 hover:text-white rounded-xl transition">
                     <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
                     <span class="text-sm font-medium">Dashboard</span>
                 </a>
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-white bg-brand-border/60 rounded-xl font-medium">
+                <a href="{{ url('/projects') }}" class="flex items-center gap-3 px-3 py-2.5 text-white bg-brand-border/60 rounded-xl font-medium">
                     <i data-lucide="folder" class="w-5 h-5"></i>
                     <span class="text-sm">Projects</span>
                 </a>
@@ -91,10 +91,10 @@
 
             <!-- Header Actions -->
             <div class="flex items-center gap-4">
-                <button class="bg-brand-lime text-black font-semibold text-sm px-4 py-2 rounded-full flex items-center gap-1.5 hover:bg-opacity-90 transition shadow-lg shadow-lime-500/10">
+                <a href="{{ url('/projects/create') }}" class="bg-brand-lime text-black font-semibold text-sm px-4 py-2 rounded-full flex items-center gap-1.5 hover:bg-opacity-90 transition shadow-lg shadow-lime-500/10">
                     <i data-lucide="plus" class="w-4 h-4"></i>
                     Create Project
-                </button>
+                </a>
                 <div class="flex items-center gap-2 border-l border-brand-border pl-4">
                     <button class="p-2 text-gray-400 hover:text-white bg-brand-card rounded-full border border-brand-border"><i data-lucide="bell" class="w-4 h-4"></i></button>
                     <button class="p-2 text-gray-400 hover:text-white bg-brand-card rounded-full border border-brand-border"><i data-lucide="sun" class="w-4 h-4"></i></button>

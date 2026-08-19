@@ -11,4 +11,10 @@ class ProjectController extends Controller
         // Mengarahkan ke file resources/views/projects/index.blade.php
         return view('projects.index');
     }
+
+    public function create()
+    {
+        // Mengarahkan ke file resources/views/projects/nejects.blade.php
+        return view('projects.nejects');
+    }
 }

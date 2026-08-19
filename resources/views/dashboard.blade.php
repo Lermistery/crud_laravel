@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -58,7 +58,7 @@
                class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium bg-bghover text-txprimary">
                 <i class="fa-solid fa-chart-line text-[11px] w-3.5 text-center"></i> Dashboard
             </a>
-            <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-txsecond hover:bg-bghover hover:text-txprimary transition-colors">
+            <a href="{{ url('/projects') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-txsecond hover:bg-bghover hover:text-txprimary transition-colors">
                 <i class="fa-solid fa-folder-open text-[11px] w-3.5 text-center"></i> Projects
             </a>
             <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-txsecond hover:bg-bghover hover:text-txprimary transition-colors">
@@ -70,10 +70,7 @@
             <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-txsecond hover:bg-bghover hover:text-txprimary transition-colors">
                 <i class="fa-solid fa-users text-[11px] w-3.5 text-center"></i> Team
             </a>
-            @if(in_array(session('user')->id_jabatan ?? 0, [1, 2]))
-            <a href="{{ url('/jabatan') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-txsecond hover:bg-bghover hover:text-txprimary transition-colors">
-                <i class="fa-solid fa-id-badge text-[11px] w-3.5 text-center"></i> Jabatan
-            </a>
+            @if((session('user')->id_jabatan ?? 0) == 1)
             <a href="{{ url('/users') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-txsecond hover:bg-bghover hover:text-txprimary transition-colors">
                 <i class="fa-solid fa-user-gear text-[11px] w-3.5 text-center"></i> Users
             </a>
