@@ -49,15 +49,15 @@
 
             <!-- Navigation Links -->
             <nav class="space-y-1.5">
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-gray-400 hover:text-white rounded-xl transition">
+                <a href="{{ url('/dashboard') }}" class="flex items-center gap-3 px-3 py-2.5 text-gray-400 hover:text-white rounded-xl transition">
                     <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
                     <span class="text-sm font-medium">Dashboard</span>
                 </a>
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-white bg-brand-border/60 rounded-xl font-medium">
+                <a href="{{ url('/projects') }}" class="flex items-center gap-3 px-3 py-2.5 text-white bg-brand-border/60 rounded-xl font-medium">
                     <i data-lucide="folder" class="w-5 h-5"></i>
                     <span class="text-sm">Projects</span>
                 </a>
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-gray-400 hover:text-white rounded-xl transition">
+                <a href="{{ url('/board') }}" class="flex items-center gap-3 px-3 py-2.5 text-gray-400 hover:text-white rounded-xl transition">
                     <i data-lucide="kanban" class="w-5 h-5"></i>
                     <span class="text-sm font-medium">Boards</span>
                 </a>
