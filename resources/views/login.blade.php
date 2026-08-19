@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        *, *::before, *::after {
+        *,
+        *::before,
+        *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -48,7 +51,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
         }
 
         .logo-icon {
@@ -288,19 +291,17 @@
         }
     </style>
 </head>
-<body>
 
-    <span class="page-label">page-login</span>
+<body>
 
     <div class="login-card">
 
-        <!-- Logo -->
         <div class="logo-icon">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="3" y="3" width="7" height="7" rx="1.5" fill="#0a0a0a"/>
-                <rect x="14" y="3" width="7" height="7" rx="1.5" fill="#0a0a0a"/>
-                <rect x="3" y="14" width="7" height="7" rx="1.5" fill="#0a0a0a"/>
-                <rect x="14" y="14" width="7" height="7" rx="1.5" fill="#0a0a0a"/>
+                <rect x="3" y="3" width="7" height="7" rx="1.5" fill="#0a0a0a" />
+                <rect x="14" y="3" width="7" height="7" rx="1.5" fill="#0a0a0a" />
+                <rect x="3" y="14" width="7" height="7" rx="1.5" fill="#0a0a0a" />
+                <rect x="14" y="14" width="7" height="7" rx="1.5" fill="#0a0a0a" />
             </svg>
         </div>
 
@@ -310,11 +311,11 @@
         <p class="login-subtitle">Sign in to continue managing your projects</p>
 
         @if(session('error'))
-            <div class="alert-error">{{ session('error') }}</div>
+        <div class="alert-error">{{ session('error') }}</div>
         @endif
 
         @if($errors->any())
-            <div class="alert-error">{{ $errors->first() }}</div>
+        <div class="alert-error">{{ $errors->first() }}</div>
         @endif
 
         <form method="POST" action="{{ url('/login') }}" style="width:100%">
@@ -326,8 +327,8 @@
                 <div class="input-wrapper">
                     <span class="input-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2" y="4" width="20" height="16" rx="2"/>
-                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                            <rect x="2" y="4" width="20" height="16" rx="2" />
+                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                         </svg>
                     </span>
                     <input
@@ -337,8 +338,7 @@
                         placeholder="developer"
                         value="{{ old('username') }}"
                         required
-                        autofocus
-                    >
+                        autofocus>
                 </div>
             </div>
 
@@ -348,8 +348,8 @@
                 <div class="input-wrapper">
                     <span class="input-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                         </svg>
                     </span>
                     <input
@@ -357,12 +357,11 @@
                         id="password"
                         name="password"
                         placeholder="••••••••••••"
-                        required
-                    >
+                        required>
                     <button type="button" class="toggle-password" id="togglePassword" aria-label="Toggle password visibility">
                         <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                            <circle cx="12" cy="12" r="3" />
                         </svg>
                     </button>
                 </div>
@@ -383,25 +382,26 @@
         </form>
 
         <p class="signup-text">
-            Don't have an account?<a href="#" class="signup-link">Sign Up</a>
+            Don't have an account?<a href="{{ url('/users/create') }}" class="signup-link">Sign Up</a>
         </p>
 
     </div>
 
     <script>
         const togglePassword = document.getElementById('togglePassword');
-        const passwordInput  = document.getElementById('password');
-        const eyeIcon        = document.getElementById('eyeIcon');
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
 
-        const eyeOpenPath   = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+        const eyeOpenPath = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
         const eyeClosedPath = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>';
 
-        togglePassword.addEventListener('click', function () {
+        togglePassword.addEventListener('click', function() {
             const isPassword = passwordInput.type === 'password';
             passwordInput.type = isPassword ? 'text' : 'password';
-            eyeIcon.innerHTML  = isPassword ? eyeClosedPath : eyeOpenPath;
+            eyeIcon.innerHTML = isPassword ? eyeClosedPath : eyeOpenPath;
         });
     </script>
 
 </body>
+
 </html>

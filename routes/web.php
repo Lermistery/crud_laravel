@@ -3,9 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 
-use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckRole;
+use App\Http\Controllers\ProjectController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -14,6 +14,7 @@ Route::get('/', function () {
 Route::get('/login', [LoginController::class, 'index']);
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout']);
+Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
 
 Route::get('/dashboard', function () {
     if (!session('user')) {
@@ -22,16 +23,14 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 });
 
+// Route Register (publik, tidak perlu login)
+Route::get('/users/create', [UserController::class, 'create']);
+Route::post('/users', [UserController::class, 'store']);
+
 // Group route untuk kelola jabatan dan user yang dilindungi Middleware CheckRole
 Route::middleware([CheckRole::class])->group(function () {
     
-    // Route untuk CRUD Jabatan
-    Route::get('/jabatan', [JabatanController::class, 'index']);
-    Route::post('/jabatan', [JabatanController::class, 'store']);
-    Route::put('/jabatan/{id}', [JabatanController::class, 'update']);
-    Route::delete('/jabatan/{id}', [JabatanController::class, 'destroy']);
-
-    // Route untuk CRUD Users
-    Route::resource('users', UserController::class)->except(['show']);
+    // Route untuk CRUD Users (kecuali create & store yang sudah didaftarkan di atas)
+    Route::resource('users', UserController::class)->except(['show', 'create', 'store']);
 
 });
