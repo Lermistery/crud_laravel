@@ -107,10 +107,9 @@
         <div class="navbar-brand">
             <h3>TDL - Dashboard</h3>
             
-            <!-- Cek Hak Akses (hanya PM dan PO) -->
-            @if(in_array(session('user')->id_jabatan, [1, 2]))
+            <!-- Cek Hak Akses (hanya Administrator) -->
+            @if(session('user')->id_jabatan == 1)
             <div class="nav-links">
-                <a href="{{ url('/jabatan') }}">Kelola Jabatan</a>
                 <a href="{{ url('/users') }}">Kelola Users</a>
             </div>
             @endif
@@ -128,9 +127,7 @@
         <div class="welcome-card">
             <h2>Selamat Datang, {{ session('user')->nama }}!</h2>
             <p>Kamu berhasil login sebagai <strong>{{ session('user')->username }}</strong></p>
-            <p style="margin-top: 10px; color: #4a90d9; font-weight: bold;">
-                Jabatan: {{ session('user')->jabatan->nama_jabatan ?? 'Tidak diketahui' }}
-            </p>
+                Role: {{ session('user')->jabatan->nama_jabatan ?? 'Tidak diketahui' }}
         </div>
     </div>
 </body>

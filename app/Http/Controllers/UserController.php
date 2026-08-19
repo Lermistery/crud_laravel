@@ -21,15 +21,16 @@ class UserController extends Controller
 
     public function create()
     {
-        $jabatans = Jabatan::all();
-        return view('users.form', compact('jabatans'));
+        return view('users.form');
     }
 
     public function store(StoreUserRequest $request, UserService $userService)
     {
         $validated = $request->validated();
+        // Auto-assign role Member (id=2) untuk user baru yang register
+        $validated['id_jabatan'] = 2;
         $userService->createUser($validated);
-        return redirect('/users')->with('success', 'User berhasil ditambahkan!');
+        return redirect('/login')->with('success', 'Akun berhasil dibuat! Silakan login.');
     }
 
     public function edit($id)

@@ -18,7 +18,6 @@ class StoreUserRequest extends FormRequest
             'nama' => 'required|string|max:100',
             'username' => 'required|string|max:250|unique:users',
             'pass' => 'required|string|min:6',
-            'id_jabatan' => 'required|exists:jabatan,id_jabatan'
         ];
     }
 
@@ -29,7 +28,6 @@ class StoreUserRequest extends FormRequest
             'username.required' => 'Username wajib diisi',
             'username.unique' => 'Username sudah terdaftar',
             'pass.required' => 'Password wajib diisi',
-            'id_jabatan.required' => 'Jabatan wajib diisi',
         ];
     }
 
