@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckRole;
+use App\Http\Controllers\ProjectController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -13,6 +14,7 @@ Route::get('/', function () {
 Route::get('/login', [LoginController::class, 'index']);
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout']);
+Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
 
 Route::get('/dashboard', function () {
     if (!session('user')) {
