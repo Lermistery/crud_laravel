@@ -57,7 +57,7 @@
                     <i data-lucide="folder" class="w-5 h-5"></i>
                     <span class="text-sm">Projects</span>
                 </a>
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-gray-400 hover:text-white rounded-xl transition">
+                <a href="{{ url('/board') }}" class="flex items-center gap-3 px-3 py-2.5 text-gray-400 hover:text-white rounded-xl transition">
                     <i data-lucide="kanban" class="w-5 h-5"></i>
                     <span class="text-sm font-medium">Boards</span>
                 </a>

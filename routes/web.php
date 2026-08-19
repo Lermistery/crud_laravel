@@ -24,6 +24,13 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 });
 
+Route::get('/board', function () {
+    if (!session('user')) {
+        return redirect('/login');
+    }
+    return view('board');
+});
+
 // Route Register (publik, tidak perlu login)
 Route::get('/users/create', [UserController::class, 'create']);
 Route::post('/users', [UserController::class, 'store']);
