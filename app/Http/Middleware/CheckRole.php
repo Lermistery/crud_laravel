@@ -21,8 +21,8 @@ class CheckRole
             return redirect('/login');
         }
 
-        if (!in_array($user->id_jabatan, [1, 2])) {
-            return redirect('/dashboard')->with('error', 'Akses ditolak! Anda tidak memiliki izin untuk halaman tersebut.');
+        if (!in_array($user->id_jabatan, [1])) {
+            return redirect('/dashboard')->with('error', 'Akses ditolak! Hanya Administrator yang dapat mengakses halaman ini.');
         }
 
         return $next($request);

@@ -44,9 +44,8 @@
     <div class="navbar">
         <div class="navbar-brand">
             <h3>TDL - Dashboard</h3>
-            @if(in_array(session('user')->id_jabatan, [1, 2]))
+            @if(session('user')->id_jabatan == 1)
             <div class="nav-links">
-                <a href="{{ url('/jabatan') }}">Kelola Jabatan</a>
                 <a href="{{ url('/users') }}" class="active">Kelola Users</a>
             </div>
             @endif
