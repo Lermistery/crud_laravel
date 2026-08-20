@@ -15,19 +15,20 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nama' => 'required|string|max:100',
+            'name' => 'required|string|max:100',
             'username' => 'required|string|max:250|unique:users',
-            'pass' => 'required|string|min:6',
+            'password' => 'required|string|min:6',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'nama.required' => 'Nama wajib diisi',
+            'name.required' => 'Nama wajib diisi',
             'username.required' => 'Username wajib diisi',
             'username.unique' => 'Username sudah terdaftar',
-            'pass.required' => 'Password wajib diisi',
+            'password.required' => 'Password wajib diisi',
+            'password.min' => 'Password minimal 6 karakter',
         ];
     }
 

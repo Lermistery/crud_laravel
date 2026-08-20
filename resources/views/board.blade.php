@@ -828,8 +828,8 @@
                         <line x1="12" y1="17" x2="12.01" y2="17" />
                     </svg>
                 </button>
-                <div class="avatar-sm color-d" title="{{ session('user')->nama ?? 'User' }}">
-                    {{ strtoupper(substr(session('user')->nama ?? 'U', 0, 2)) }}
+                <div class="avatar-sm color-d" title="{{ session('user')->name ?? session('user')->nama ?? 'User' }}">
+                    {{ strtoupper(substr(session('user')->name ?? session('user')->nama ?? 'U', 0, 2)) }}
                 </div>
             </div>
         </header>

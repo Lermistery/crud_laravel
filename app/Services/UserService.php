@@ -11,14 +11,12 @@ class UserService
     public function updateUser(User $user, array $validatedData)
     {
         $data = [
-            'nama' => $validatedData['nama'],
+            'name' => $validatedData['name'],
             'username' => $validatedData['username'],
-            'id_jabatan' => $validatedData['id_jabatan']
         ];
 
-        // Logika hashing dipindah ke sini
-        if (!empty($validatedData['pass'])) {
-            $data['pass'] = Hash::make($validatedData['pass']);
+        if (!empty($validatedData['password'])) {
+            $data['password'] = Hash::make($validatedData['password']);
         }
 
         return $user->update($data);
@@ -26,7 +24,7 @@ class UserService
 
     public function createUser(array $validatedData)
     {
-        $validatedData['pass'] = Hash::make($validatedData['pass']);
+        $validatedData['password'] = Hash::make($validatedData['password']);
         return User::create($validatedData);
     }
 

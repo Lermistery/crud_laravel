@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Jabatan;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Services\UserService;
@@ -15,7 +14,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::with('jabatan')->get();
+        $users = User::all();
         return view('users.index', compact('users'));
     }
 
@@ -27,8 +26,6 @@ class UserController extends Controller
     public function store(StoreUserRequest $request, UserService $userService)
     {
         $validated = $request->validated();
-        // Auto-assign role Member (id=2) untuk user baru yang register
-        $validated['id_jabatan'] = 2;
         $userService->createUser($validated);
         return redirect('/login')->with('success', 'Akun berhasil dibuat! Silakan login.');
     }
@@ -36,8 +33,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        $jabatans = Jabatan::all();
-        return view('users.form', compact('user', 'jabatans'));
+        return view('users.form', compact('user'));
     }
 
     public function update(UpdateUserRequest $request, $id, UserService $userService)

@@ -153,7 +153,7 @@
                 </button>
                 <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold text-black cursor-pointer"
                     style="background:linear-gradient(135deg,#a3e635,#65a30d)">
-                    {{ strtoupper(substr(session('user')->nama ?? 'U', 0, 1)) }}
+                    {{ strtoupper(substr(session('user')->name ?? session('user')->nama ?? 'U', 0, 1)) }}
                 </div>
                 <a href="{{ url('/logout') }}"
                     class="w-8 h-8 bg-bginput border border-bdr rounded-lg flex items-center justify-center text-txsecond hover:text-txprimary hover:bg-bghover transition-colors">
@@ -169,7 +169,7 @@
                 <h2 class="text-xl font-bold mb-1.5">Create New Project</h2>
                 <p class="text-xs text-txsecond mb-6">Set up a new workspace for your team. You can modify these details later.</p>
 
-                <form action="#" method="POST" class="space-y-5">
+                <form action="{{ url('/projects') }}" method="POST" class="space-y-5">
                     @csrf
 
                     {{-- Project Name --}}

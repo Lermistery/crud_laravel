@@ -19,10 +19,9 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'nama',
+        'name',
         'username',
-        'pass',
-        'id_jabatan',
+        'password',
     ];
 
     /**
@@ -49,10 +48,37 @@ class User extends Authenticatable
     }
 
     /**
-     * Relasi ke tabel jabatan
+     * Proyek tempat user ini terdaftar sebagai anggota/admin
      */
-    public function jabatan()
+    public function projects()
     {
-        return $this->belongsTo(Jabatan::class, 'id_jabatan', 'id_jabatan');
+        return $this->belongsToMany(Project::class, 'project_users', 'user_id', 'project_id')
+                    ->withPivot('role')
+                    ->withTimestamps();
+    }
+
+    /**
+     * Tim tempat user ini terdaftar
+     */
+    public function teams()
+    {
+        return $this->belongsToMany(Team::class, 'team_users', 'user_id', 'team_id')
+                    ->withTimestamps();
+    }
+
+    /**
+     * Daftar task yang ditugaskan ke user ini
+     */
+    public function assignedTasks()
+    {
+        return $this->hasMany(Task::class, 'assigned_to');
+    }
+
+    /**
+     * Daftar task yang dibuat oleh user ini
+     */
+    public function createdTasks()
+    {
+        return $this->hasMany(Task::class, 'created_by');
     }
 }
