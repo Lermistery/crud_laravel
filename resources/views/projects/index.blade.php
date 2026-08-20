@@ -161,167 +161,48 @@
                 <!-- PROJECT CARDS GRID (Left 8 Columns) -->
                 <div class="col-span-8 grid grid-cols-2 gap-4">
 
-                    <!-- Card 1 -->
-                    <div class="bg-brand-card border border-brand-border/80 rounded-2xl p-4 flex flex-col justify-between hover:border-gray-700 transition">
+                    @forelse($projects as $project)
+                    <a href="{{ url('/projects/' . $project->id) }}" class="bg-brand-card border border-brand-border/80 rounded-2xl p-4 flex flex-col justify-between hover:border-[#ccff00] transition group">
                         <div>
                             <div class="flex items-start justify-between">
                                 <div>
-                                    <h3 class="text-sm font-semibold text-white">E-Commerce Platform</h3>
-                                    <span class="text-[11px] text-gray-400">PRJ-001</span>
+                                    <h3 class="text-sm font-semibold text-white group-hover:text-brand-lime transition">{{ $project->nama_project }}</h3>
+                                    <span class="text-[11px] text-gray-400 font-mono">KEY: {{ $project->key }}</span>
                                 </div>
                                 <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] px-2.5 py-0.5 rounded-full font-medium">Active</span>
                             </div>
+                            @if($project->deskripsi)
+                            <p class="text-xs text-gray-400 mt-2 line-clamp-2">{{ $project->deskripsi }}</p>
+                            @endif
                             <div class="mt-4">
                                 <div class="flex justify-between text-xs text-gray-400 mb-1.5">
-                                    <span>Completion Progress</span>
-                                    <span class="text-white font-semibold">78%</span>
+                                    <span>Tasks</span>
+                                    <span class="text-white font-semibold">{{ $project->tasks_count ?? 0 }} Tasks</span>
                                 </div>
                                 <div class="w-full bg-gray-800 rounded-full h-1.5">
-                                    <div class="bg-brand-lime h-1.5 rounded-full" style="width: 78%"></div>
+                                    <div class="bg-brand-lime h-1.5 rounded-full" style="width: 100%"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="flex items-center justify-between text-xs text-gray-400 mt-4 pt-3 border-t border-brand-border/40">
-                            <span class="flex items-center gap-1.5 text-amber-400"><span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> High Priority</span>
-                            <span class="flex items-center gap-1"><i data-lucide="check-square" class="w-3.5 h-3.5"></i> 34 Tasks</span>
-                            <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> Due Dec 15</span>
+                            <span class="flex items-center gap-1.5 text-amber-400"><span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Prosite Workspace</span>
+                            <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> {{ $project->deadline ? \Carbon\Carbon::parse($project->deadline)->format('d M Y') : 'No Deadline' }}</span>
                         </div>
-                    </div>
-
-                    <!-- Card 2 -->
-                    <div class="bg-brand-card border border-brand-border/80 rounded-2xl p-4 flex flex-col justify-between hover:border-gray-700 transition">
+                    </a>
+                    @empty
+                    <div class="col-span-2 bg-brand-card border border-brand-border/80 rounded-2xl p-10 text-center flex flex-col items-center justify-center space-y-4">
+                        <div class="w-12 h-12 rounded-2xl bg-brand-lime/10 flex items-center justify-center text-brand-lime">
+                            <i class="fa-solid fa-folder-plus text-xl"></i>
+                        </div>
                         <div>
-                            <div class="flex items-start justify-between">
-                                <div>
-                                    <h3 class="text-sm font-semibold text-white">Mobile Banking App</h3>
-                                    <span class="text-[11px] text-gray-400">PRJ-002</span>
-                                </div>
-                                <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] px-2.5 py-0.5 rounded-full font-medium">Active</span>
-                            </div>
-                            <div class="mt-4">
-                                <div class="flex justify-between text-xs text-gray-400 mb-1.5">
-                                    <span>Completion Progress</span>
-                                    <span class="text-white font-semibold">65%</span>
-                                </div>
-                                <div class="w-full bg-gray-800 rounded-full h-1.5">
-                                    <div class="bg-brand-lime h-1.5 rounded-full" style="width: 65%"></div>
-                                </div>
-                            </div>
+                            <h3 class="text-base font-bold text-white">Belum ada proyek</h3>
+                            <p class="text-xs text-gray-400 mt-1">Buat proyek baru pertama Anda untuk memulai manajemen tugas Jira-style.</p>
                         </div>
-                        <div class="flex items-center justify-between text-xs text-gray-400 mt-4 pt-3 border-t border-brand-border/40">
-                            <span class="flex items-center gap-1.5 text-rose-500"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Critical Priority</span>
-                            <span class="flex items-center gap-1"><i data-lucide="check-square" class="w-3.5 h-3.5"></i> 52 Tasks</span>
-                            <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> Due Nov 30</span>
-                        </div>
+                        <a href="{{ url('/projects/create') }}" class="bg-brand-lime text-black font-semibold text-xs px-4 py-2.5 rounded-xl flex items-center gap-2 hover:opacity-90 transition">
+                            <i class="fa-solid fa-plus"></i> Buat Proyek Baru
+                        </a>
                     </div>
-
-                    <!-- Card 3 -->
-                    <div class="bg-brand-card border border-brand-border/80 rounded-2xl p-4 flex flex-col justify-between hover:border-gray-700 transition">
-                        <div>
-                            <div class="flex items-start justify-between">
-                                <div>
-                                    <h3 class="text-sm font-semibold text-white">CRM Dashboard</h3>
-                                    <span class="text-[11px] text-gray-400">PRJ-003</span>
-                                </div>
-                                <span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] px-2.5 py-0.5 rounded-full font-medium">In Review</span>
-                            </div>
-                            <div class="mt-4">
-                                <div class="flex justify-between text-xs text-gray-400 mb-1.5">
-                                    <span>Completion Progress</span>
-                                    <span class="text-white font-semibold">92%</span>
-                                </div>
-                                <div class="w-full bg-gray-800 rounded-full h-1.5">
-                                    <div class="bg-brand-lime h-1.5 rounded-full" style="width: 92%"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between text-xs text-gray-400 mt-4 pt-3 border-t border-brand-border/40">
-                            <span class="flex items-center gap-1.5 text-purple-400"><span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span> Medium Priority</span>
-                            <span class="flex items-center gap-1"><i data-lucide="check-square" class="w-3.5 h-3.5"></i> 28 Tasks</span>
-                            <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> Due Oct 20</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 4 -->
-                    <div class="bg-brand-card border border-brand-border/80 rounded-2xl p-4 flex flex-col justify-between hover:border-gray-700 transition">
-                        <div>
-                            <div class="flex items-start justify-between">
-                                <div>
-                                    <h3 class="text-sm font-semibold text-white">API Gateway Service</h3>
-                                    <span class="text-[11px] text-gray-400">PRJ-004</span>
-                                </div>
-                                <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] px-2.5 py-0.5 rounded-full font-medium">Active</span>
-                            </div>
-                            <div class="mt-4">
-                                <div class="flex justify-between text-xs text-gray-400 mb-1.5">
-                                    <span>Completion Progress</span>
-                                    <span class="text-white font-semibold">45%</span>
-                                </div>
-                                <div class="w-full bg-gray-800 rounded-full h-1.5">
-                                    <div class="bg-brand-lime h-1.5 rounded-full" style="width: 45%"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between text-xs text-gray-400 mt-4 pt-3 border-t border-brand-border/40">
-                            <span class="flex items-center gap-1.5 text-amber-400"><span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> High Priority</span>
-                            <span class="flex items-center gap-1"><i data-lucide="check-square" class="w-3.5 h-3.5"></i> 41 Tasks</span>
-                            <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> Due Jan 10</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 5 -->
-                    <div class="bg-brand-card border border-brand-border/80 rounded-2xl p-4 flex flex-col justify-between hover:border-gray-700 transition">
-                        <div>
-                            <div class="flex items-start justify-between">
-                                <div>
-                                    <h3 class="text-sm font-semibold text-white">Design System Library</h3>
-                                    <span class="text-[11px] text-gray-400">PRJ-005</span>
-                                </div>
-                                <span class="bg-gray-500/10 text-gray-400 border border-gray-500/20 text-[10px] px-2.5 py-0.5 rounded-full font-medium">Planning</span>
-                            </div>
-                            <div class="mt-4">
-                                <div class="flex justify-between text-xs text-gray-400 mb-1.5">
-                                    <span>Completion Progress</span>
-                                    <span class="text-white font-semibold">12%</span>
-                                </div>
-                                <div class="w-full bg-gray-800 rounded-full h-1.5">
-                                    <div class="bg-brand-lime h-1.5 rounded-full" style="width: 12%"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between text-xs text-gray-400 mt-4 pt-3 border-t border-brand-border/40">
-                            <span class="flex items-center gap-1.5 text-teal-400"><span class="w-1.5 h-1.5 rounded-full bg-teal-400"></span> Low Priority</span>
-                            <span class="flex items-center gap-1"><i data-lucide="check-square" class="w-3.5 h-3.5"></i> 15 Tasks</span>
-                            <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> Due Feb 28</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 6 -->
-                    <div class="bg-brand-card border border-brand-border/80 rounded-2xl p-4 flex flex-col justify-between hover:border-gray-700 transition">
-                        <div>
-                            <div class="flex items-start justify-between">
-                                <div>
-                                    <h3 class="text-sm font-semibold text-white">Data Analytics Engine</h3>
-                                    <span class="text-[11px] text-gray-400">PRJ-006</span>
-                                </div>
-                                <span class="bg-amber-500/10 text-amber-500 border border-amber-500/20 text-[10px] px-2.5 py-0.5 rounded-full font-medium">On Hold</span>
-                            </div>
-                            <div class="mt-4">
-                                <div class="flex justify-between text-xs text-gray-400 mb-1.5">
-                                    <span>Completion Progress</span>
-                                    <span class="text-white font-semibold">33%</span>
-                                </div>
-                                <div class="w-full bg-gray-800 rounded-full h-1.5">
-                                    <div class="bg-brand-lime h-1.5 rounded-full" style="width: 33%"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between text-xs text-gray-400 mt-4 pt-3 border-t border-brand-border/40">
-                            <span class="flex items-center gap-1.5 text-purple-400"><span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span> Medium Priority</span>
-                            <span class="flex items-center gap-1"><i data-lucide="check-square" class="w-3.5 h-3.5"></i> 22 Tasks</span>
-                            <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> Due Mar 15</span>
-                        </div>
-                    </div>
+                    @endforelse
 
                 </div>
 
@@ -335,27 +216,9 @@
                         <div class="space-y-3 text-xs">
                             <div class="flex items-center justify-between">
                                 <span class="flex items-center gap-2 text-gray-300">
-                                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Active
+                                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Total Proyek
                                 </span>
-                                <span class="font-bold text-white">4 Projects</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="flex items-center gap-2 text-gray-300">
-                                    <span class="w-2 h-2 rounded-full bg-blue-400"></span> In Review
-                                </span>
-                                <span class="font-bold text-white">1 Project</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="flex items-center gap-2 text-gray-300">
-                                    <span class="w-2 h-2 rounded-full bg-gray-400"></span> Planning
-                                </span>
-                                <span class="font-bold text-white">1 Project</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="flex items-center gap-2 text-gray-300">
-                                    <span class="w-2 h-2 rounded-full bg-amber-500"></span> On Hold
-                                </span>
-                                <span class="font-bold text-white">1 Project</span>
+                                <span class="font-bold text-white">{{ count($projects) }} Projects</span>
                             </div>
                         </div>
                     </div>

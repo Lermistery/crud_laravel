@@ -43,15 +43,13 @@
 <body>
     <div class="navbar">
         <div class="navbar-brand">
-            <h3>TDL - Dashboard</h3>
-            @if(session('user')->id_jabatan == 1)
+            <h3>ProSite - Dashboard</h3>
             <div class="nav-links">
                 <a href="{{ url('/users') }}" class="active">Kelola Users</a>
             </div>
-            @endif
         </div>
         <div class="user-info">
-            <span>Halo, {{ session('user')->nama }}</span>
+            <span>Halo, {{ session('user')->name ?? session('user')->nama }}</span>
             <a href="{{ url('/logout') }}" class="btn-logout">Logout</a>
         </div>
     </div>
@@ -76,7 +74,6 @@
                         <th width="5%">ID</th>
                         <th>Nama Lengkap</th>
                         <th>Username</th>
-                        <th>Jabatan</th>
                         <th width="15%">Aksi</th>
                     </tr>
                 </thead>
@@ -84,9 +81,8 @@
                     @foreach($users as $user)
                     <tr>
                         <td>{{ $user->id }}</td>
-                        <td>{{ $user->nama }}</td>
+                        <td>{{ $user->name ?? $user->nama }}</td>
                         <td>{{ $user->username }}</td>
-                        <td><span class="badge">{{ $user->jabatan->nama_jabatan ?? 'Tidak Ada Jabatan' }}</span></td>
                         <td>
                             <div style="display: flex; gap: 8px;">
                                 <a href="{{ url('/users/'.$user->id.'/edit') }}" class="btn-warning">Edit</a>

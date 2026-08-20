@@ -347,7 +347,7 @@
 
             {{-- Nama Lengkap --}}
             <div class="form-group">
-                <label for="nama">NAMA LENGKAP</label>
+                <label for="name">NAMA LENGKAP</label>
                 <div class="input-wrapper">
                     <span class="input-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -357,9 +357,9 @@
                     </span>
                     <input
                         type="text"
-                        id="nama"
-                        name="nama"
-                        value="{{ old('nama', $user->nama ?? '') }}"
+                        id="name"
+                        name="name"
+                        value="{{ old('name', $user->name ?? '') }}"
                         required
                         placeholder="Contoh: Budi Santoso"
                         autofocus>
@@ -399,7 +399,7 @@
                     <input
                         type="password"
                         id="inputPass"
-                        name="pass"
+                        name="password"
                         {{ isset($user) ? '' : 'required' }}
                         placeholder="{{ isset($user) ? 'Kosongkan jika tidak ingin diubah' : 'Minimal 6 karakter' }}">
                     <button type="button" class="toggle-password" id="togglePassword" aria-label="Toggle password visibility">

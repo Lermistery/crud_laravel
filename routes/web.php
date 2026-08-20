@@ -16,6 +16,8 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout']);
 Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
 Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
+Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
+Route::get('/projects/{id}', [ProjectController::class, 'show'])->name('projects.show');
 
 Route::get('/dashboard', function () {
     if (!session('user')) {
@@ -27,6 +29,10 @@ Route::get('/dashboard', function () {
 Route::get('/board', function () {
     if (!session('user')) {
         return redirect('/login');
+    }
+    $firstProject = \App\Models\Project::first();
+    if ($firstProject) {
+        return redirect('/projects/' . $firstProject->id);
     }
     return view('board');
 });

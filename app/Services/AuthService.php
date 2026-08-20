@@ -9,10 +9,10 @@ class AuthService
     public function verifyLogin(array $credentials)
     {
         // Cari usernya di database
-        $user = User::with('jabatan')->where('username', $credentials['username'])->first();
+        $user = User::where('username', $credentials['username'])->first();
 
         // Cek kecocokan password
-        if ($user && Hash::check($credentials['password'], $user->pass)) {
+        if ($user && Hash::check($credentials['password'], $user->password)) {
             return $user;
         }
 
