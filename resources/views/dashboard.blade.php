@@ -1,19 +1,46 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProSite - Dashboard</title>
-    <!-- Tailwind CSS CDN -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
         /* Warna kustom hijau neon sesuai gambar */
-        .bg-neon { background-color: #ccff00; }
-        .text-neon { color: #ccff00; }
-        .border-neon { border-color: #ccff00; }
+        .bg-neon {
+            background-color: #ccff00;
+        }
+
+        .text-neon {
+            color: #ccff00;
+        }
+
+        .border-neon {
+            border-color: #ccff00;
+        }
     </style>
 </head>
+
 <body class="bg-[#0e100f] text-gray-200 font-sans antialiased h-screen overflow-hidden flex m-0 p-0">
 
     <!-- SIDEBAR -->
@@ -21,8 +48,13 @@
         <div>
             <!-- Logo -->
             <div class="flex items-center gap-3 px-6 py-6">
-                <div class="bg-neon text-black p-2 rounded-xl flex items-center justify-center font-bold text-lg">
-                    <i class="fa-solid fa-shapes"></i>
+                <div class="bg-neon rounded-xl flex items-center justify-center flex-shrink-0" style="width:40px;height:40px;">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:22px;height:22px;">
+                        <rect x="3" y="3" width="7" height="7" rx="1.5" fill="#0a0a0a" />
+                        <rect x="14" y="3" width="7" height="7" rx="1.5" fill="#0a0a0a" />
+                        <rect x="3" y="14" width="7" height="7" rx="1.5" fill="#0a0a0a" />
+                        <rect x="14" y="14" width="7" height="7" rx="1.5" fill="#0a0a0a" />
+                    </svg>
                 </div>
                 <span class="text-xl font-bold tracking-wide text-white">ProSite</span>
             </div>
@@ -33,22 +65,25 @@
                     <i class="fa-solid fa-chart-pie text-base"></i> Dashboard
                 </a>
                 <a href="{{ url('/projects') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
-                    <i class="fa-regular fa-folder text-base"></i> Projects
-                </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
-                    <i class="fa-regular fa-clone text-base"></i> Boards
-                </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
-                    <i class="fa-regular fa-square-check text-base"></i> Tasks
-                </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
-                    <i class="fa-regular fa-user text-base"></i> Team
-                </a>
-                @if((session('user')->id_jabatan ?? 0) == 1)
-                <a href="{{ url('/users') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
-                    <i class="fa-solid fa-user-gear text-base"></i> Users
-                </a>
-                @endif
+                    <i class="fa-regular fa-folder text-base"></i> Project
+                    <a href="{{ url('/board') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
+                            <rect x="3" y="3" width="5" height="18" rx="1" />
+                            <rect x="10" y="3" width="5" height="12" rx="1" />
+                            <rect x="17" y="3" width="4" height="8" rx="1" />
+                        </svg> Board
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
+                        <i class="fa-regular fa-square-check text-base"></i> Task
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
+                        <i class="fa-regular fa-user text-base"></i> Team
+                    </a>
+                    @if((session('user')->id_jabatan ?? 0) == 1)
+                    <a href="{{ url('/users') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
+                        <i class="fa-solid fa-user-gear text-base"></i> User
+                    </a>
+                    @endif
             </nav>
         </div>
 
@@ -62,7 +97,7 @@
 
     <!-- MAIN CONTENT -->
     <div class="flex-1 flex flex-col h-screen overflow-hidden bg-[#0e100f]">
-        
+
         <!-- TOPBAR -->
         <header class="h-20 border-b border-[#171c19] flex items-center justify-between px-8 bg-[#0e100f] flex-shrink-0">
             <!-- Search bar -->
@@ -73,12 +108,8 @@
                 <input type="text" placeholder="Search anything, tasks, issues..." class="w-full bg-[#131916] text-sm text-gray-300 pl-11 pr-4 py-2.5 rounded-2xl border border-[#1f2622] focus:outline-none focus:border-[#ccff00] transition">
             </div>
 
-            <!-- Top Right Icons & Button -->
+            <!-- Top Right Icons -->
             <div class="flex items-center gap-4">
-                <!-- Create Project Button -->
-                <button class="bg-neon text-black font-semibold text-sm px-4 py-2.5 rounded-xl flex items-center gap-2 hover:opacity-95 transition shadow-sm">
-                    <i class="fa-solid fa-plus text-xs font-bold"></i> Create Project
-                </button>
 
                 <button class="w-10 h-10 rounded-xl bg-[#131916] border border-[#1f2622] flex items-center justify-center text-gray-400 hover:text-white transition relative">
                     <i class="fa-regular fa-bell text-sm"></i>
@@ -98,7 +129,7 @@
 
         <!-- DASHBOARD CONTAINER -->
         <main class="flex-1 overflow-y-auto p-8 bg-[#0e100f]">
-            
+
             <!-- STATS CARDS ROW -->
             <div class="grid grid-cols-5 gap-5 mb-8">
                 <!-- Card 1 -->
@@ -164,7 +195,7 @@
 
             <!-- BOARD SECTION -->
             <div class="grid grid-cols-4 gap-6">
-                
+
                 <!-- MAIN KANBAN BOARD -->
                 <div class="col-span-3">
                     <div class="flex items-center justify-between mb-5">
@@ -173,7 +204,7 @@
 
                     <!-- Columns Grid -->
                     <div class="grid grid-cols-4 gap-4">
-                        
+
                         <!-- COLUMN 1: To Do -->
                         <div class="flex flex-col gap-4">
                             <div class="flex items-center justify-between text-sm px-1">
@@ -313,11 +344,11 @@
 
                 <!-- RIGHT SIDE PANELS -->
                 <div class="col-span-1 flex flex-col gap-6">
-                    
+
                     <!-- Team Workload Card -->
                     <div class="bg-[#131916] border border-[#1f2622] rounded-2xl p-5 shadow-sm">
                         <h3 class="text-sm font-bold text-white mb-4">Team Workload</h3>
-                        
+
                         <div class="space-y-4">
                             <div>
                                 <div class="flex justify-between text-xs mb-1.5">
@@ -354,7 +385,7 @@
                     <!-- Recent Activity Card -->
                     <div class="bg-[#131916] border border-[#1f2622] rounded-2xl p-5 shadow-sm">
                         <h3 class="text-sm font-bold text-white mb-4">Recent Activity</h3>
-                        
+
                         <div class="space-y-4 text-xs">
                             <div>
                                 <p class="text-gray-300 leading-normal">John D. pushed to branch main</p>
@@ -379,4 +410,5 @@
     </div>
 
 </body>
+
 </html>

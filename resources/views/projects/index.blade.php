@@ -1,25 +1,31 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProSite - Projects</title>
-    <!-- Tailwind CSS CDN -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    },
                     colors: {
                         brand: {
-                            lime: '#CCFF00', // Warna hijau neon khas
-                            dark: '#0A0A0C', // Background utama
-                            sidebar: '#111113', // Background sidebar
-                            card: '#16161A', // Background card
-                            border: '#23232A', // Warna garis/border
+                            lime: '#CCFF00',
+                            dark: '#0e100f',
+                            sidebar: '#090b0a',
+                            card: '#131916',
+                            border: '#1f2622',
                         }
                     }
                 }
@@ -27,66 +33,91 @@
         }
     </script>
     <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .bg-neon {
+            background-color: #ccff00;
+        }
+
+        .text-neon {
+            color: #ccff00;
+        }
+
         /* Efek Glow Hijau di Latar Belakang */
         .bg-glow {
             background: radial-gradient(circle at 20% 20%, rgba(204, 255, 0, 0.05) 0%, transparent 40%),
-                        radial-gradient(circle at 80% 80%, rgba(204, 255, 0, 0.03) 0%, transparent 40%);
+                radial-gradient(circle at 80% 80%, rgba(204, 255, 0, 0.03) 0%, transparent 40%);
         }
     </style>
 </head>
-<body class="bg-brand-dark text-gray-200 font-sans antialiased min-h-screen flex bg-glow">
+
+<body class="bg-[#0e100f] text-gray-200 font-sans antialiased h-screen overflow-hidden flex m-0 p-0 bg-glow">
 
     <!-- SIDEBAR -->
-    <aside class="w-64 bg-brand-sidebar border-r border-brand-border p-5 flex flex-col justify-between shrink-0">
+    <aside class="w-64 bg-[#090b0a] border-r border-[#171c19] flex flex-col justify-between select-none flex-shrink-0">
         <div>
             <!-- Logo -->
-            <div class="flex items-center gap-3 mb-8 px-2">
-                <div class="w-8 h-8 bg-brand-lime text-black rounded-lg flex items-center justify-center font-bold">
-                    <i data-lucide="grid" class="w-5 h-5 text-black"></i>
+            <div class="flex items-center gap-3 px-6 py-6">
+                <div class="rounded-xl flex items-center justify-center flex-shrink-0 bg-neon" style="width:40px;height:40px;">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:22px;height:22px;">
+                        <rect x="3" y="3" width="7" height="7" rx="1.5" fill="#0a0a0a" />
+                        <rect x="14" y="3" width="7" height="7" rx="1.5" fill="#0a0a0a" />
+                        <rect x="3" y="14" width="7" height="7" rx="1.5" fill="#0a0a0a" />
+                        <rect x="14" y="14" width="7" height="7" rx="1.5" fill="#0a0a0a" />
+                    </svg>
                 </div>
-                <span class="text-xl font-bold text-white tracking-wide">ProSite</span>
+                <span class="text-xl font-bold tracking-wide text-white">ProSite</span>
             </div>
 
             <!-- Navigation Links -->
-            <nav class="space-y-1.5">
-                <a href="{{ url('/dashboard') }}" class="flex items-center gap-3 px-3 py-2.5 text-gray-400 hover:text-white rounded-xl transition">
-                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-                    <span class="text-sm font-medium">Dashboard</span>
+            <nav class="mt-4 px-3 space-y-1.5">
+                <a href="{{ url('/dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
+                    <i class="fa-solid fa-chart-pie text-base"></i> Dashboard
                 </a>
-                <a href="{{ url('/projects') }}" class="flex items-center gap-3 px-3 py-2.5 text-white bg-brand-border/60 rounded-xl font-medium">
-                    <i data-lucide="folder" class="w-5 h-5"></i>
-                    <span class="text-sm">Projects</span>
+                <a href="{{ url('/projects') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl bg-[#17201b] text-white font-medium text-sm">
+                    <i class="fa-regular fa-folder text-base"></i> Project
                 </a>
-                <a href="{{ url('/board') }}" class="flex items-center gap-3 px-3 py-2.5 text-gray-400 hover:text-white rounded-xl transition">
-                    <i data-lucide="kanban" class="w-5 h-5"></i>
-                    <span class="text-sm font-medium">Boards</span>
+                <a href="{{ url('/board') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
+                        <rect x="3" y="3" width="5" height="18" rx="1" />
+                        <rect x="10" y="3" width="5" height="12" rx="1" />
+                        <rect x="17" y="3" width="4" height="8" rx="1" />
+                    </svg> Board
                 </a>
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-gray-400 hover:text-white rounded-xl transition">
-                    <i data-lucide="check-square" class="w-5 h-5"></i>
-                    <span class="text-sm font-medium">Tasks</span>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
+                    <i class="fa-regular fa-square-check text-base"></i> Task
                 </a>
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-gray-400 hover:text-white rounded-xl transition">
-                    <i data-lucide="users" class="w-5 h-5"></i>
-                    <span class="text-sm font-medium">Team</span>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
+                    <i class="fa-regular fa-user text-base"></i> Team
                 </a>
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-gray-400 hover:text-white rounded-xl transition">
-                    <i data-lucide="settings" class="w-5 h-5"></i>
-                    <span class="text-sm font-medium">Settings</span>
+                @if((session('user')->id_jabatan ?? 0) == 1)
+                <a href="{{ url('/users') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
+                    <i class="fa-solid fa-user-gear text-base"></i> User
                 </a>
+                @endif
             </nav>
+        </div>
+
+        <!-- Settings di Bawah Sidebar -->
+        <div class="px-3 pb-6">
+            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
+                <i class="fa-solid fa-gear text-base"></i> Settings
+            </a>
         </div>
     </aside>
 
     <!-- MAIN CONTENT -->
     <main class="flex-1 flex flex-col min-w-0">
-        
+
         <!-- HEADER TOP BAR -->
         <header class="h-16 border-b border-brand-border px-8 flex items-center justify-between">
             <!-- Search Bar -->
             <div class="relative w-80">
                 <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                <input type="text" placeholder="Search anything, tasks, issues..." 
-                       class="w-full bg-brand-card text-sm text-gray-200 placeholder-gray-500 rounded-full pl-10 pr-4 py-2 border border-brand-border focus:outline-none focus:border-brand-lime transition">
+                <input type="text" placeholder="Search anything, tasks, issues..."
+                    class="w-full bg-brand-card text-sm text-gray-200 placeholder-gray-500 rounded-full pl-10 pr-4 py-2 border border-brand-border focus:outline-none focus:border-brand-lime transition">
             </div>
 
             <!-- Header Actions -->
@@ -106,12 +137,12 @@
 
         <!-- PAGE CONTENT CONTAINER -->
         <div class="p-8 space-y-6 overflow-y-auto">
-            
+
             <!-- Title & Filters -->
             <div>
                 <h1 class="text-2xl font-bold text-white">Projects</h1>
                 <p class="text-sm text-gray-400 mt-0.5">Manage and track all ongoing project streams</p>
-                
+
                 <div class="flex items-center gap-3 mt-4">
                     <button class="bg-brand-card border border-brand-border text-xs px-3 py-1.5 rounded-lg flex items-center gap-2 text-gray-300">
                         Status: <span class="text-white font-medium">All</span>
@@ -126,10 +157,10 @@
 
             <!-- GRID LAYOUT -->
             <div class="grid grid-cols-12 gap-6">
-                
+
                 <!-- PROJECT CARDS GRID (Left 8 Columns) -->
                 <div class="col-span-8 grid grid-cols-2 gap-4">
-                    
+
                     <!-- Card 1 -->
                     <div class="bg-brand-card border border-brand-border/80 rounded-2xl p-4 flex flex-col justify-between hover:border-gray-700 transition">
                         <div>
@@ -296,11 +327,11 @@
 
                 <!-- RIGHT SIDE STATS (Right 4 Columns) -->
                 <div class="col-span-4 space-y-4">
-                    
+
                     <!-- Summary Card -->
                     <div class="bg-brand-card border border-brand-border/80 rounded-2xl p-5">
                         <h3 class="text-sm font-semibold text-white mb-4">Project Status Summary</h3>
-                        
+
                         <div class="space-y-3 text-xs">
                             <div class="flex items-center justify-between">
                                 <span class="flex items-center gap-2 text-gray-300">
@@ -332,7 +363,7 @@
                     <!-- Overall Efficiency Card -->
                     <div class="bg-brand-card border border-brand-border/80 rounded-2xl p-5">
                         <h3 class="text-sm font-semibold text-white mb-4">Overall Efficiency</h3>
-                        
+
                         <div>
                             <div class="flex items-center justify-between text-xs mb-2">
                                 <span class="text-gray-400">On-Time Delivery</span>
@@ -356,4 +387,5 @@
         lucide.createIcons();
     </script>
 </body>
+
 </html>

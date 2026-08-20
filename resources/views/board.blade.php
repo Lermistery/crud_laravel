@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,25 +8,36 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        :root {
-            --bg:        #0d0d0d;
-            --sidebar:   #111111;
-            --topbar:    #111111;
-            --col-bg:    #161616;
-            --card-bg:   #1e1e1e;
-            --border:    #252525;
-            --border-soft:#1f1f1f;
-            --text-1:    #e8e8e8;
-            --text-2:    #9ca3af;
-            --text-3:    #5a5a5a;
-            --lime:      #c8f135;
-            --lime-dim:  rgba(200,241,53,0.08);
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        html, body { height: 100%; }
+        :root {
+            --bg: #0e100f;
+            --sidebar: #090b0a;
+            --topbar: #0e100f;
+            --col-bg: #111210;
+            --card-bg: #161816;
+            --border: #1f2622;
+            --border-soft: #1f2622;
+            --text-1: #e8ead4;
+            --text-2: #9ca3af;
+            --text-3: #5a5a5a;
+            --lime: #ccff00;
+            --lime-dim: rgba(204, 255, 0, 0.08);
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -38,8 +50,8 @@
 
         /* ───────── SIDEBAR ───────── */
         .sidebar {
-            width: 158px;
-            min-width: 158px;
+            width: 256px;
+            min-width: 256px;
             background: var(--sidebar);
             border-right: 1px solid var(--border);
             display: flex;
@@ -52,26 +64,29 @@
         .sidebar-logo {
             display: flex;
             align-items: center;
-            gap: 9px;
-            padding: 18px 16px 20px;
+            gap: 12px;
+            padding: 24px;
             border-bottom: 1px solid var(--border);
         }
 
         .logo-box {
-            width: 30px;
-            height: 30px;
+            width: 40px;
+            height: 40px;
             background: var(--lime);
-            border-radius: 7px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
         }
 
-        .logo-box svg { width: 17px; height: 17px; }
+        .logo-box svg {
+            width: 22px;
+            height: 22px;
+        }
 
         .logo-text {
-            font-size: 15px;
+            font-size: 18px;
             font-weight: 700;
             color: var(--text-1);
             letter-spacing: 0.01em;
@@ -80,18 +95,18 @@
         .sidebar-nav {
             display: flex;
             flex-direction: column;
-            padding: 12px 10px;
-            gap: 2px;
+            padding: 16px 12px;
+            gap: 4px;
             flex: 1;
         }
 
         .nav-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 8px 10px;
-            border-radius: 7px;
-            font-size: 13.5px;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-size: 14px;
             font-weight: 500;
             color: var(--text-2);
             cursor: pointer;
@@ -100,13 +115,13 @@
         }
 
         .nav-item:hover {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             color: var(--text-1);
         }
 
         .nav-item.active {
-            background: var(--lime-dim);
-            color: var(--lime);
+            background: #17201b;
+            color: #ffffff;
         }
 
         .nav-item svg {
@@ -116,10 +131,12 @@
             opacity: 0.85;
         }
 
-        .nav-item.active svg { opacity: 1; }
+        .nav-item.active svg {
+            opacity: 1;
+        }
 
         .sidebar-bottom {
-            padding: 10px 10px 18px;
+            padding: 10px 12px 24px;
             border-top: 1px solid var(--border);
         }
 
@@ -156,9 +173,14 @@
             transition: color 0.15s;
         }
 
-        .breadcrumb-link:hover { color: var(--text-1); }
+        .breadcrumb-link:hover {
+            color: var(--text-1);
+        }
 
-        .breadcrumb-sep { color: var(--text-3); font-size: 12px; }
+        .breadcrumb-sep {
+            color: var(--text-3);
+            font-size: 12px;
+        }
 
         .breadcrumb-current {
             color: var(--text-1);
@@ -187,11 +209,14 @@
         }
 
         .icon-btn:hover {
-            background: rgba(255,255,255,0.07);
+            background: rgba(255, 255, 255, 0.07);
             color: var(--text-1);
         }
 
-        .icon-btn svg { width: 17px; height: 17px; }
+        .icon-btn svg {
+            width: 17px;
+            height: 17px;
+        }
 
         .notif-dot {
             position: absolute;
@@ -269,13 +294,34 @@
             border: 2px solid var(--bg);
         }
 
-        .avatar-group .avatar-sm:first-child { margin-left: 0; }
+        .avatar-group .avatar-sm:first-child {
+            margin-left: 0;
+        }
 
-        .avatar-sm.color-a { background: #3b2a4a; color: #c084fc; }
-        .avatar-sm.color-b { background: #1a3a2a; color: #4ade80; }
-        .avatar-sm.color-c { background: #2a1a3a; color: #a78bfa; }
-        .avatar-sm.color-d { background: #2d4a6b; color: #93c5fd; }
-        .avatar-sm.color-e { background: #3a2a1a; color: #fb923c; }
+        .avatar-sm.color-a {
+            background: #3b2a4a;
+            color: #c084fc;
+        }
+
+        .avatar-sm.color-b {
+            background: #1a3a2a;
+            color: #4ade80;
+        }
+
+        .avatar-sm.color-c {
+            background: #2a1a3a;
+            color: #a78bfa;
+        }
+
+        .avatar-sm.color-d {
+            background: #2d4a6b;
+            color: #93c5fd;
+        }
+
+        .avatar-sm.color-e {
+            background: #3a2a1a;
+            color: #fb923c;
+        }
 
         .avatar-more {
             width: 28px;
@@ -309,12 +355,15 @@
         }
 
         .filter-btn:hover {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             color: var(--text-1);
             border-color: #3a3a3a;
         }
 
-        .filter-btn svg { width: 14px; height: 14px; }
+        .filter-btn svg {
+            width: 14px;
+            height: 14px;
+        }
 
         /* ───────── COLUMNS WRAPPER ───────── */
         .columns-wrapper {
@@ -326,9 +375,18 @@
             overflow-y: hidden;
         }
 
-        .columns-wrapper::-webkit-scrollbar { height: 6px; }
-        .columns-wrapper::-webkit-scrollbar-track { background: transparent; }
-        .columns-wrapper::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
+        .columns-wrapper::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .columns-wrapper::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .columns-wrapper::-webkit-scrollbar-thumb {
+            background: #2a2a2a;
+            border-radius: 3px;
+        }
 
         /* ───────── COLUMN ───────── */
         .column {
@@ -365,10 +423,21 @@
             flex-shrink: 0;
         }
 
-        .dot-gray   { background: #6b7280; }
-        .dot-lime   { background: #c8f135; }
-        .dot-purple { background: #a855f7; }
-        .dot-green  { background: #22c55e; }
+        .dot-gray {
+            background: #6b7280;
+        }
+
+        .dot-lime {
+            background: #c8f135;
+        }
+
+        .dot-purple {
+            background: #a855f7;
+        }
+
+        .dot-green {
+            background: #22c55e;
+        }
 
         .col-title {
             font-size: 13.5px;
@@ -398,8 +467,15 @@
             transition: background 0.15s, color 0.15s;
         }
 
-        .col-more:hover { background: rgba(255,255,255,0.06); color: var(--text-2); }
-        .col-more svg { width: 14px; height: 14px; }
+        .col-more:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-2);
+        }
+
+        .col-more svg {
+            width: 14px;
+            height: 14px;
+        }
 
         .column-cards {
             flex: 1;
@@ -410,9 +486,18 @@
             gap: 8px;
         }
 
-        .column-cards::-webkit-scrollbar { width: 4px; }
-        .column-cards::-webkit-scrollbar-track { background: transparent; }
-        .column-cards::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
+        .column-cards::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .column-cards::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .column-cards::-webkit-scrollbar-thumb {
+            background: #2a2a2a;
+            border-radius: 2px;
+        }
 
         /* ───────── CARD ───────── */
         .card {
@@ -436,7 +521,11 @@
             margin-bottom: 8px;
         }
 
-        .card-badges { display: flex; align-items: center; gap: 6px; }
+        .card-badges {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
         .badge {
             font-size: 10px;
@@ -447,9 +536,20 @@
             text-transform: uppercase;
         }
 
-        .badge-high   { background: rgba(239,68,68,0.18);  color: #f87171; }
-        .badge-medium { background: rgba(234,179,8,0.18);  color: #fbbf24; }
-        .badge-low    { background: rgba(34,197,94,0.18);  color: #4ade80; }
+        .badge-high {
+            background: rgba(239, 68, 68, 0.18);
+            color: #f87171;
+        }
+
+        .badge-medium {
+            background: rgba(234, 179, 8, 0.18);
+            color: #fbbf24;
+        }
+
+        .badge-low {
+            background: rgba(34, 197, 94, 0.18);
+            color: #4ade80;
+        }
 
         .card-id {
             font-size: 11px;
@@ -476,7 +576,9 @@
             overflow: hidden;
         }
 
-        .progress-wrap { margin-bottom: 10px; }
+        .progress-wrap {
+            margin-bottom: 10px;
+        }
 
         .progress-bar-bg {
             height: 4px;
@@ -512,9 +614,15 @@
             color: var(--text-3);
         }
 
-        .meta-item svg { width: 12px; height: 12px; }
+        .meta-item svg {
+            width: 12px;
+            height: 12px;
+        }
 
-        .card-avatars { display: flex; align-items: center; }
+        .card-avatars {
+            display: flex;
+            align-items: center;
+        }
 
         .card-avatars .avatar-sm {
             width: 24px;
@@ -524,7 +632,9 @@
             border: 1.5px solid var(--card-bg);
         }
 
-        .card-avatars .avatar-sm:first-child { margin-left: 0; }
+        .card-avatars .avatar-sm:first-child {
+            margin-left: 0;
+        }
 
         .subtask-info {
             display: flex;
@@ -535,7 +645,10 @@
             margin-bottom: 8px;
         }
 
-        .subtask-info svg { width: 12px; height: 12px; }
+        .subtask-info svg {
+            width: 12px;
+            height: 12px;
+        }
 
         .subtask-extra {
             background: #252525;
@@ -556,13 +669,17 @@
             margin-bottom: 8px;
         }
 
-        .due-today svg { width: 12px; height: 12px; color: var(--text-3); }
+        .due-today svg {
+            width: 12px;
+            height: 12px;
+            color: var(--text-3);
+        }
 
         .badge-completed {
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            background: rgba(34,197,94,0.12);
+            background: rgba(34, 197, 94, 0.12);
             color: #4ade80;
             font-size: 11px;
             font-weight: 600;
@@ -571,7 +688,10 @@
             margin-top: 8px;
         }
 
-        .badge-completed svg { width: 11px; height: 11px; }
+        .badge-completed svg {
+            width: 11px;
+            height: 11px;
+        }
 
         .review-count {
             background: #252525;
@@ -603,77 +723,69 @@
         }
 
         .add-task-btn:hover {
-            background: rgba(255,255,255,0.03);
+            background: rgba(255, 255, 255, 0.03);
             color: var(--text-2);
             border-color: #3a3a3a;
         }
 
-        .add-task-btn svg { width: 13px; height: 13px; }
+        .add-task-btn svg {
+            width: 13px;
+            height: 13px;
+        }
     </style>
 </head>
+
 <body>
 
     <!-- ═══ SIDEBAR ═══ -->
-    <aside class="sidebar">
-        <div class="sidebar-logo">
-            <div class="logo-box">
-                <svg viewBox="0 0 24 24" fill="none">
-                    <rect x="3" y="3" width="7" height="7" rx="1.5" fill="#0d0d0d"/>
-                    <rect x="14" y="3" width="7" height="7" rx="1.5" fill="#0d0d0d"/>
-                    <rect x="3" y="14" width="7" height="7" rx="1.5" fill="#0d0d0d"/>
-                    <rect x="14" y="14" width="7" height="7" rx="1.5" fill="#0d0d0d"/>
-                </svg>
+    <aside class="w-64 bg-[#090b0a] border-r border-[#1f2622] flex flex-col justify-between select-none flex-shrink-0" style="min-width:256px;height:100vh;">
+        <div>
+            <!-- Logo -->
+            <div class="flex items-center gap-3 px-6 py-6">
+                <div class="bg-[#ccff00] rounded-xl flex items-center justify-center flex-shrink-0" style="width:40px;height:40px;">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:22px;height:22px;">
+                        <rect x="3" y="3" width="7" height="7" rx="1.5" fill="#0a0a0a" />
+                        <rect x="14" y="3" width="7" height="7" rx="1.5" fill="#0a0a0a" />
+                        <rect x="3" y="14" width="7" height="7" rx="1.5" fill="#0a0a0a" />
+                        <rect x="14" y="14" width="7" height="7" rx="1.5" fill="#0a0a0a" />
+                    </svg>
+                </div>
+                <span class="text-xl font-bold tracking-wide text-white">ProSite</span>
             </div>
-            <span class="logo-text">ProSite</span>
+
+            <!-- Navigation Links -->
+            <nav class="mt-4 px-3 space-y-1.5">
+                <a href="{{ url('/dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
+                    <i class="fa-solid fa-chart-pie text-base"></i> Dashboard
+                </a>
+                <a href="{{ url('/projects') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
+                    <i class="fa-regular fa-folder text-base"></i> Project
+                </a>
+                <a href="{{ url('/board') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl bg-[#17201b] text-white font-medium text-sm">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
+                        <rect x="3" y="3" width="5" height="18" rx="1" />
+                        <rect x="10" y="3" width="5" height="12" rx="1" />
+                        <rect x="17" y="3" width="4" height="8" rx="1" />
+                    </svg> Board
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
+                    <i class="fa-regular fa-square-check text-base"></i> Task
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
+                    <i class="fa-regular fa-user text-base"></i> Team
+                </a>
+                @if((session('user')->id_jabatan ?? 0) == 1)
+                <a href="{{ url('/users') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
+                    <i class="fa-solid fa-user-gear text-base"></i> User
+                </a>
+                @endif
+            </nav>
         </div>
 
-        <nav class="sidebar-nav">
-            <a href="{{ url('/dashboard') }}" class="nav-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
-                    <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
-                </svg>
-                Dashboard
-            </a>
-
-            <a href="{{ url('/projects') }}" class="nav-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-                </svg>
-                Projects
-            </a>
-
-            <!-- Board (active) -->
-            <a href="{{ url('/board') }}" class="nav-item active">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="3" width="5" height="18" rx="1"/><rect x="10" y="3" width="5" height="12" rx="1"/><rect x="17" y="3" width="4" height="8" rx="1"/>
-                </svg>
-                Board
-            </a>
-
-            <a href="#" class="nav-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-                </svg>
-                Tasks
-            </a>
-
-            <a href="#" class="nav-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
-                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                </svg>
-                Team
-            </a>
-        </nav>
-
-        <div class="sidebar-bottom">
-            <a href="#" class="nav-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="3"/>
-                    <path d="M19.07 4.93a1 1 0 0 0-1.41 0l-.71.7a7 7 0 0 0-9.9 9.9l-.7.71a1 1 0 1 0 1.41 1.41l.71-.7a7 7 0 0 0 9.9-9.9l.7-.71a1 1 0 0 0 0-1.41z"/>
-                </svg>
-                Settings
+        <!-- Settings di Bawah Sidebar -->
+        <div class="px-3 pb-6">
+            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
+                <i class="fa-solid fa-gear text-base"></i> Settings
             </a>
         </div>
     </aside>
@@ -691,25 +803,29 @@
             <div class="topbar-actions">
                 <button class="icon-btn" title="Notifications">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0" />
                     </svg>
                     <span class="notif-dot"></span>
                 </button>
                 <button class="icon-btn" title="Toggle theme">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"/>
-                        <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                        <circle cx="12" cy="12" r="5" />
+                        <line x1="12" y1="1" x2="12" y2="3" />
+                        <line x1="12" y1="21" x2="12" y2="23" />
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                        <line x1="1" y1="12" x2="3" y2="12" />
+                        <line x1="21" y1="12" x2="23" y2="12" />
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
                     </svg>
                 </button>
                 <button class="icon-btn" title="Help">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                        <line x1="12" y1="17" x2="12.01" y2="17" />
                     </svg>
                 </button>
                 <div class="avatar-sm color-d" title="{{ session('user')->nama ?? 'User' }}">
@@ -735,7 +851,7 @@
                     </div>
                     <button class="filter-btn">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
                         </svg>
                         Filter
                     </button>
@@ -755,7 +871,9 @@
                         </div>
                         <button class="col-more">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>
+                                <circle cx="5" cy="12" r="1" />
+                                <circle cx="12" cy="12" r="1" />
+                                <circle cx="19" cy="12" r="1" />
                             </svg>
                         </button>
                     </div>
@@ -771,15 +889,22 @@
                             <div class="card-footer">
                                 <div class="card-meta">
                                     <span class="meta-item">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                                        </svg>
                                         2
                                     </span>
                                     <span class="meta-item">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                            <circle cx="12" cy="12" r="3" />
+                                        </svg>
                                         1
                                     </span>
                                 </div>
-                                <div class="card-avatars"><div class="avatar-sm color-e">TK</div></div>
+                                <div class="card-avatars">
+                                    <div class="avatar-sm color-e">TK</div>
+                                </div>
                             </div>
                         </div>
                         <!-- Card 2 -->
@@ -792,17 +917,22 @@
                             <div class="card-footer">
                                 <div class="card-meta">
                                     <span class="meta-item">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                                        </svg>
                                         0
                                     </span>
                                 </div>
-                                <div class="card-avatars"><div class="avatar-sm color-b">SK</div></div>
+                                <div class="card-avatars">
+                                    <div class="avatar-sm color-b">SK</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <button class="add-task-btn">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
                         </svg>
                         Add Task
                     </button>
@@ -818,7 +948,9 @@
                         </div>
                         <button class="col-more">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>
+                                <circle cx="5" cy="12" r="1" />
+                                <circle cx="12" cy="12" r="1" />
+                                <circle cx="19" cy="12" r="1" />
                             </svg>
                         </button>
                     </div>
@@ -836,12 +968,17 @@
                                 </div>
                             </div>
                             <div class="subtask-info">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 11 12 14 22 4" />
+                                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                                </svg>
                                 3/5 <span class="subtask-extra">+1</span>
                             </div>
                             <div class="card-footer">
                                 <div class="card-meta"></div>
-                                <div class="card-avatars"><div class="avatar-sm color-a">JR</div></div>
+                                <div class="card-avatars">
+                                    <div class="avatar-sm color-a">JR</div>
+                                </div>
                             </div>
                         </div>
                         <!-- Card 2 -->
@@ -853,7 +990,9 @@
                             <div class="card-title">Update branding guidelines PDF</div>
                             <div class="card-footer">
                                 <div class="card-meta"></div>
-                                <div class="card-avatars"><div class="avatar-sm color-c">ML</div></div>
+                                <div class="card-avatars">
+                                    <div class="avatar-sm color-c">ML</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -869,7 +1008,9 @@
                         </div>
                         <button class="col-more">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>
+                                <circle cx="5" cy="12" r="1" />
+                                <circle cx="12" cy="12" r="1" />
+                                <circle cx="19" cy="12" r="1" />
                             </svg>
                         </button>
                     </div>
@@ -882,7 +1023,12 @@
                             <div class="card-title">Finalize Q3 Analytics Report</div>
                             <div class="card-desc">Awaiting final approval from the marketing director before...</div>
                             <div class="due-today">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                    <line x1="16" y1="2" x2="16" y2="6" />
+                                    <line x1="8" y1="2" x2="8" y2="6" />
+                                    <line x1="3" y1="10" x2="21" y2="10" />
+                                </svg>
                                 Due Today
                             </div>
                             <div class="card-footer">
@@ -903,7 +1049,9 @@
                         </div>
                         <button class="col-more">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>
+                                <circle cx="5" cy="12" r="1" />
+                                <circle cx="12" cy="12" r="1" />
+                                <circle cx="19" cy="12" r="1" />
                             </svg>
                         </button>
                     </div>
@@ -915,7 +1063,9 @@
                             </div>
                             <div class="card-title">Setup email campaign automation</div>
                             <div class="badge-completed">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
                                 Completed
                             </div>
                         </div>
@@ -927,4 +1077,5 @@
     </div><!-- end main -->
 
 </body>
+
 </html>

@@ -8,7 +8,7 @@ use App\Http\Middleware\CheckRole;
 use App\Http\Controllers\ProjectController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
 Route::get('/login', [LoginController::class, 'index']);
@@ -37,8 +37,7 @@ Route::post('/users', [UserController::class, 'store']);
 
 // Group route untuk kelola jabatan dan user yang dilindungi Middleware CheckRole
 Route::middleware([CheckRole::class])->group(function () {
-    
+
     // Route untuk CRUD Users (kecuali create & store yang sudah didaftarkan di atas)
     Route::resource('users', UserController::class)->except(['show', 'create', 'store']);
-
 });
