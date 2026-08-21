@@ -737,10 +737,8 @@
 
 <body>
 
-    <!-- ═══ SIDEBAR ═══ -->
     <aside class="w-64 bg-[#090b0a] border-r border-[#1f2622] flex flex-col justify-between select-none flex-shrink-0" style="min-width:256px;height:100vh;">
         <div>
-            <!-- Logo -->
             <div class="flex items-center gap-3 px-6 py-6">
                 <div class="bg-[#ccff00] rounded-xl flex items-center justify-center flex-shrink-0" style="width:40px;height:40px;">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:22px;height:22px;">
@@ -860,8 +858,6 @@
 
             <!-- ─── KANBAN COLUMNS ─── -->
             <div class="columns-wrapper">
-
-                <!-- ══ TO DO ══ -->
                 <div class="column">
                     <div class="column-header">
                         <div class="col-header-left">
