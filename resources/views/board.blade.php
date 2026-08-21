@@ -1,1081 +1,447 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="id">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Board | ProSite</title>
+
+    <!-- ANTI-FLICKER: Baca localStorage SEBELUM render -->
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            lime:    '#CCFF00',
+                            dark:    '#0e100f',
+                            sidebar: '#090b0a',
+                            card:    '#131916',
+                            border:  '#1f2622',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        *,
-        *::before,
-        *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg: #0e100f;
-            --sidebar: #090b0a;
-            --topbar: #0e100f;
-            --col-bg: #111210;
-            --card-bg: #161816;
-            --border: #1f2622;
-            --border-soft: #1f2622;
-            --text-1: #e8ead4;
-            --text-2: #9ca3af;
-            --text-3: #5a5a5a;
-            --lime: #ccff00;
-            --lime-dim: rgba(204, 255, 0, 0.08);
-        }
-
-        html,
-        body {
-            height: 100%;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: var(--text-1);
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        /* ───────── SIDEBAR ───────── */
-        .sidebar {
-            width: 256px;
-            min-width: 256px;
-            background: var(--sidebar);
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            padding: 0;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        .sidebar-logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 24px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .logo-box {
-            width: 40px;
-            height: 40px;
-            background: var(--lime);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .logo-box svg {
-            width: 22px;
-            height: 22px;
-        }
-
-        .logo-text {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text-1);
-            letter-spacing: 0.01em;
-        }
-
-        .sidebar-nav {
-            display: flex;
-            flex-direction: column;
-            padding: 16px 12px;
-            gap: 4px;
-            flex: 1;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            border-radius: 14px;
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-2);
-            cursor: pointer;
-            transition: background 0.15s, color 0.15s;
-            text-decoration: none;
-        }
-
-        .nav-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-1);
-        }
-
-        .nav-item.active {
-            background: #17201b;
-            color: #ffffff;
-        }
-
-        .nav-item svg {
-            width: 16px;
-            height: 16px;
-            flex-shrink: 0;
-            opacity: 0.85;
-        }
-
-        .nav-item.active svg {
-            opacity: 1;
-        }
-
-        .sidebar-bottom {
-            padding: 10px 12px 24px;
-            border-top: 1px solid var(--border);
-        }
-
-        /* ───────── MAIN AREA ───────── */
-        .main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        /* ───────── TOPBAR ───────── */
-        .topbar {
-            background: var(--topbar);
-            border-bottom: 1px solid var(--border);
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 22px;
-            flex-shrink: 0;
-        }
-
-        .topbar-breadcrumb {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 13px;
-        }
-
-        .breadcrumb-link {
-            color: var(--text-2);
-            text-decoration: none;
-            transition: color 0.15s;
-        }
-
-        .breadcrumb-link:hover {
-            color: var(--text-1);
-        }
-
-        .breadcrumb-sep {
-            color: var(--text-3);
-            font-size: 12px;
-        }
-
-        .breadcrumb-current {
-            color: var(--text-1);
-            font-weight: 500;
-        }
-
-        .topbar-actions {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .icon-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 7px;
-            border: none;
-            background: transparent;
-            color: var(--text-2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background 0.15s, color 0.15s;
-            position: relative;
-        }
-
-        .icon-btn:hover {
-            background: rgba(255, 255, 255, 0.07);
-            color: var(--text-1);
-        }
-
-        .icon-btn svg {
-            width: 17px;
-            height: 17px;
-        }
-
-        .notif-dot {
-            position: absolute;
-            top: 6px;
-            right: 6px;
-            width: 7px;
-            height: 7px;
-            background: #f97316;
-            border-radius: 50%;
-            border: 1.5px solid var(--topbar);
-        }
-
-        .avatar-sm {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: #2d4a6b;
-            color: #93c5fd;
-            font-size: 11px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            border: 1.5px solid var(--border);
-            cursor: pointer;
-        }
-
-        /* ───────── BOARD CONTENT AREA ───────── */
-        .board-area {
-            flex: 1;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* ───────── BOARD HEADER ───────── */
-        .board-header {
-            padding: 22px 24px 16px;
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            flex-shrink: 0;
-        }
-
-        .board-title {
-            font-size: 26px;
-            font-weight: 800;
-            color: #f0f0f0;
-            letter-spacing: -0.02em;
-            line-height: 1.2;
-            margin-bottom: 4px;
-        }
-
-        .board-subtitle {
-            font-size: 13px;
-            color: var(--text-2);
-            font-weight: 400;
-        }
-
-        .board-header-right {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 4px;
-        }
-
-        .avatar-group {
-            display: flex;
-            align-items: center;
-        }
-
-        .avatar-group .avatar-sm {
-            margin-left: -8px;
-            border: 2px solid var(--bg);
-        }
-
-        .avatar-group .avatar-sm:first-child {
-            margin-left: 0;
-        }
-
-        .avatar-sm.color-a {
-            background: #3b2a4a;
-            color: #c084fc;
-        }
-
-        .avatar-sm.color-b {
-            background: #1a3a2a;
-            color: #4ade80;
-        }
-
-        .avatar-sm.color-c {
-            background: #2a1a3a;
-            color: #a78bfa;
-        }
-
-        .avatar-sm.color-d {
-            background: #2d4a6b;
-            color: #93c5fd;
-        }
-
-        .avatar-sm.color-e {
-            background: #3a2a1a;
-            color: #fb923c;
-        }
-
-        .avatar-more {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: #222;
-            color: var(--text-2);
-            font-size: 10px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: -8px;
-            border: 2px solid var(--bg);
-        }
-
-        .filter-btn {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 7px 13px;
-            border-radius: 7px;
-            border: 1px solid var(--border);
-            background: transparent;
-            color: var(--text-2);
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            font-family: 'Inter', sans-serif;
-            transition: background 0.15s, color 0.15s, border-color 0.15s;
-        }
-
-        .filter-btn:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-1);
-            border-color: #3a3a3a;
-        }
-
-        .filter-btn svg {
-            width: 14px;
-            height: 14px;
-        }
-
-        /* ───────── COLUMNS WRAPPER ───────── */
-        .columns-wrapper {
-            flex: 1;
-            display: flex;
-            gap: 14px;
-            padding: 0 24px 24px;
-            overflow-x: auto;
-            overflow-y: hidden;
-        }
-
-        .columns-wrapper::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .columns-wrapper::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .columns-wrapper::-webkit-scrollbar-thumb {
-            background: #2a2a2a;
-            border-radius: 3px;
-        }
-
-        /* ───────── COLUMN ───────── */
-        .column {
-            width: 270px;
-            min-width: 270px;
-            background: var(--col-bg);
-            border-radius: 12px;
-            border: 1px solid var(--border-soft);
-            display: flex;
-            flex-direction: column;
-            max-height: 100%;
-            overflow: hidden;
-        }
-
-        .column-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 13px 14px 11px;
-            flex-shrink: 0;
-            border-bottom: 1px solid var(--border-soft);
-        }
-
-        .col-header-left {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .col-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        .dot-gray {
-            background: #6b7280;
-        }
-
-        .dot-lime {
-            background: #c8f135;
-        }
-
-        .dot-purple {
-            background: #a855f7;
-        }
-
-        .dot-green {
-            background: #22c55e;
-        }
-
-        .col-title {
-            font-size: 13.5px;
-            font-weight: 600;
-            color: var(--text-1);
-        }
-
-        .col-count {
-            background: #252525;
-            color: var(--text-2);
-            font-size: 11px;
-            font-weight: 600;
-            padding: 1px 7px;
-            border-radius: 20px;
-            border: 1px solid var(--border);
-        }
-
-        .col-more {
-            background: none;
-            border: none;
-            color: var(--text-3);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            padding: 3px 4px;
-            border-radius: 5px;
-            transition: background 0.15s, color 0.15s;
-        }
-
-        .col-more:hover {
-            background: rgba(255, 255, 255, 0.06);
-            color: var(--text-2);
-        }
-
-        .col-more svg {
-            width: 14px;
-            height: 14px;
-        }
-
-        .column-cards {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .column-cards::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .column-cards::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .column-cards::-webkit-scrollbar-thumb {
-            background: #2a2a2a;
-            border-radius: 2px;
-        }
-
-        /* ───────── CARD ───────── */
-        .card {
-            background: var(--card-bg);
-            border: 1px solid #282828;
-            border-radius: 10px;
-            padding: 12px 13px;
-            cursor: pointer;
-            transition: border-color 0.2s, transform 0.1s;
-        }
-
-        .card:hover {
-            border-color: #3a3a3a;
-            transform: translateY(-1px);
-        }
-
-        .card-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
-
-        .card-badges {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .badge {
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 7px;
-            border-radius: 4px;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-        }
-
-        .badge-high {
-            background: rgba(239, 68, 68, 0.18);
-            color: #f87171;
-        }
-
-        .badge-medium {
-            background: rgba(234, 179, 8, 0.18);
-            color: #fbbf24;
-        }
-
-        .badge-low {
-            background: rgba(34, 197, 94, 0.18);
-            color: #4ade80;
-        }
-
-        .card-id {
-            font-size: 11px;
-            color: var(--text-3);
-            font-weight: 500;
-        }
-
-        .card-title {
-            font-size: 13.5px;
-            font-weight: 600;
-            color: var(--text-1);
-            line-height: 1.4;
-            margin-bottom: 6px;
-        }
-
-        .card-desc {
-            font-size: 12px;
-            color: var(--text-2);
-            line-height: 1.5;
-            margin-bottom: 10px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .progress-wrap {
-            margin-bottom: 10px;
-        }
-
-        .progress-bar-bg {
-            height: 4px;
-            background: #2a2a2a;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background: var(--lime);
-            border-radius: 4px;
-        }
-
-        .card-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-
-        .card-meta {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 11.5px;
-            color: var(--text-3);
-        }
-
-        .meta-item svg {
-            width: 12px;
-            height: 12px;
-        }
-
-        .card-avatars {
-            display: flex;
-            align-items: center;
-        }
-
-        .card-avatars .avatar-sm {
-            width: 24px;
-            height: 24px;
-            font-size: 9px;
-            margin-left: -6px;
-            border: 1.5px solid var(--card-bg);
-        }
-
-        .card-avatars .avatar-sm:first-child {
-            margin-left: 0;
-        }
-
-        .subtask-info {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 11.5px;
-            color: var(--text-3);
-            margin-bottom: 8px;
-        }
-
-        .subtask-info svg {
-            width: 12px;
-            height: 12px;
-        }
-
-        .subtask-extra {
-            background: #252525;
-            color: var(--text-2);
-            font-size: 10px;
-            font-weight: 600;
-            padding: 1px 5px;
-            border-radius: 4px;
-            margin-left: 2px;
-        }
-
-        .due-today {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 11.5px;
-            color: var(--text-2);
-            margin-bottom: 8px;
-        }
-
-        .due-today svg {
-            width: 12px;
-            height: 12px;
-            color: var(--text-3);
-        }
-
-        .badge-completed {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            background: rgba(34, 197, 94, 0.12);
-            color: #4ade80;
-            font-size: 11px;
-            font-weight: 600;
-            padding: 3px 9px;
-            border-radius: 5px;
-            margin-top: 8px;
-        }
-
-        .badge-completed svg {
-            width: 11px;
-            height: 11px;
-        }
-
-        .review-count {
-            background: #252525;
-            color: var(--text-2);
-            font-size: 10px;
-            font-weight: 600;
-            padding: 2px 6px;
-            border-radius: 4px;
-            border: 1px solid #333;
-        }
-
-        .add-task-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            width: calc(100% - 20px);
-            margin: 0 10px 10px;
-            padding: 8px;
-            border: 1px dashed #2d2d2d;
-            border-radius: 8px;
-            background: transparent;
-            color: var(--text-3);
-            font-size: 12.5px;
-            font-weight: 500;
-            cursor: pointer;
-            font-family: 'Inter', sans-serif;
-            transition: background 0.15s, color 0.15s, border-color 0.15s;
-        }
-
-        .add-task-btn:hover {
-            background: rgba(255, 255, 255, 0.03);
-            color: var(--text-2);
-            border-color: #3a3a3a;
-        }
-
-        .add-task-btn svg {
-            width: 13px;
-            height: 13px;
-        }
+        body { font-family: 'Inter', sans-serif; }
+        .board-scroll::-webkit-scrollbar        { height: 5px; }
+        .board-scroll::-webkit-scrollbar-track  { background: transparent; }
+        .board-scroll::-webkit-scrollbar-thumb  { background: #d1d5db; border-radius: 4px; }
+        .dark .board-scroll::-webkit-scrollbar-thumb { background: #2a2a2a; }
+        .col-scroll::-webkit-scrollbar        { width: 3px; }
+        .col-scroll::-webkit-scrollbar-track  { background: transparent; }
+        .col-scroll::-webkit-scrollbar-thumb  { background: #d1d5db; border-radius: 2px; }
+        .dark .col-scroll::-webkit-scrollbar-thumb { background: #2a2a2a; }
+        .task-card { transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease; }
+        .task-card:hover { transform: translateY(-2px); }
+        .logo-glow { box-shadow: 0 0 20px rgba(204,255,0,0.25); }
+        .badge-high   { background:rgba(239,68,68,0.14);  color:#dc2626; }
+        .badge-medium { background:rgba(234,179,8,0.14);  color:#d97706; }
+        .badge-low    { background:rgba(34,197,94,0.14);  color:#16a34a; }
+        .dark .badge-high   { background:rgba(239,68,68,0.18);  color:#f87171; }
+        .dark .badge-medium { background:rgba(234,179,8,0.18);  color:#fbbf24; }
+        .dark .badge-low    { background:rgba(34,197,94,0.18);  color:#4ade80; }
     </style>
 </head>
 
-<body>
+<body class="bg-gray-100 dark:bg-[#0e100f] text-gray-800 dark:text-gray-200 font-sans antialiased h-screen overflow-hidden flex m-0 p-0 transition-colors duration-200">
 
-    <!-- ═══ SIDEBAR ═══ -->
-    <aside class="w-64 bg-[#090b0a] border-r border-[#1f2622] flex flex-col justify-between select-none flex-shrink-0" style="min-width:256px;height:100vh;">
+    <!-- SIDEBAR -->
+    <aside class="w-64 min-w-[256px] bg-white dark:bg-[#090b0a] border-r border-gray-200 dark:border-[#1f2622] flex flex-col justify-between select-none flex-shrink-0 transition-colors duration-200 h-screen">
         <div>
-            <!-- Logo -->
-            <div class="flex items-center gap-3 px-6 py-6">
-                <div class="bg-[#ccff00] rounded-xl flex items-center justify-center flex-shrink-0" style="width:40px;height:40px;">
+            <div class="flex items-center gap-3 px-6 py-6 border-b border-gray-100 dark:border-[#1f2622]">
+                <div class="bg-[#ccff00] logo-glow rounded-xl flex items-center justify-center flex-shrink-0" style="width:40px;height:40px;">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:22px;height:22px;">
-                        <rect x="3" y="3" width="7" height="7" rx="1.5" fill="#0a0a0a" />
-                        <rect x="14" y="3" width="7" height="7" rx="1.5" fill="#0a0a0a" />
-                        <rect x="3" y="14" width="7" height="7" rx="1.5" fill="#0a0a0a" />
-                        <rect x="14" y="14" width="7" height="7" rx="1.5" fill="#0a0a0a" />
+                        <rect x="3"  y="3"  width="7" height="7" rx="1.5" fill="#0a0a0a"/>
+                        <rect x="14" y="3"  width="7" height="7" rx="1.5" fill="#0a0a0a"/>
+                        <rect x="3"  y="14" width="7" height="7" rx="1.5" fill="#0a0a0a"/>
+                        <rect x="14" y="14" width="7" height="7" rx="1.5" fill="#0a0a0a"/>
                     </svg>
                 </div>
-                <span class="text-xl font-bold tracking-wide text-white">ProSite</span>
+                <span class="text-xl font-bold tracking-wide text-gray-900 dark:text-white">ProSite</span>
             </div>
-
-            <!-- Navigation Links -->
-            <nav class="mt-4 px-3 space-y-1.5">
-                <a href="{{ url('/dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
+            <nav class="mt-4 px-3 space-y-1">
+                <a href="{{ url('/dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-[#131916] font-medium text-sm transition">
                     <i class="fa-solid fa-chart-pie text-base"></i> Dashboard
                 </a>
-                <a href="{{ url('/projects') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
+                <a href="{{ url('/projects') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-[#131916] font-medium text-sm transition">
                     <i class="fa-regular fa-folder text-base"></i> Project
                 </a>
-                <a href="{{ url('/board') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl bg-[#17201b] text-white font-medium text-sm">
+                <a href="{{ url('/board') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl bg-gray-200/80 dark:bg-[#17201b] text-gray-900 dark:text-white font-medium text-sm">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
-                        <rect x="3" y="3" width="5" height="18" rx="1" />
-                        <rect x="10" y="3" width="5" height="12" rx="1" />
-                        <rect x="17" y="3" width="4" height="8" rx="1" />
-                    </svg> Board
+                        <rect x="3"  y="3" width="5" height="18" rx="1"/>
+                        <rect x="10" y="3" width="5" height="12" rx="1"/>
+                        <rect x="17" y="3" width="4" height="8"  rx="1"/>
+                    </svg>
+                    Board
                 </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
+                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-[#131916] font-medium text-sm transition">
                     <i class="fa-regular fa-square-check text-base"></i> Task
                 </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
+                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-[#131916] font-medium text-sm transition">
                     <i class="fa-regular fa-user text-base"></i> Team
                 </a>
                 @if((session('user')->id_jabatan ?? 0) == 1)
-                <a href="{{ url('/users') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
+                <a href="{{ url('/users') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-[#131916] font-medium text-sm transition">
                     <i class="fa-solid fa-user-gear text-base"></i> User
                 </a>
                 @endif
             </nav>
         </div>
-
-        <!-- Settings di Bawah Sidebar -->
         <div class="px-3 pb-6">
-            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-400 hover:text-white hover:bg-[#131916] font-medium text-sm transition">
+            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-[#131916] font-medium text-sm transition">
                 <i class="fa-solid fa-gear text-base"></i> Settings
             </a>
         </div>
     </aside>
 
-    <!-- ═══ MAIN ═══ -->
-    <div class="main">
+    <!-- MAIN -->
+    <div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
 
-        <!-- ─── TOPBAR ─── -->
-        <header class="topbar">
-            <div class="topbar-breadcrumb">
-                <a href="{{ url('/dashboard') }}" class="breadcrumb-link">Boards</a>
-                <span class="breadcrumb-sep">›</span>
-                <span class="breadcrumb-current">Sprint 42 Board</span>
+        <!-- TOPBAR -->
+        <header class="h-14 border-b border-gray-200 dark:border-[#1f2622] flex items-center justify-between px-6 bg-white/80 dark:bg-[#0e100f] backdrop-blur-sm flex-shrink-0 transition-colors duration-200">
+            <div class="flex items-center gap-2 text-sm">
+                <a href="{{ url('/board') }}" class="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">Boards</a>
+                <span class="text-gray-300 dark:text-[#5a5a5a]">&#8250;</span>
+                <span class="text-gray-900 dark:text-white font-medium">Sprint 42 Board</span>
             </div>
-            <div class="topbar-actions">
-                <button class="icon-btn" title="Notifications">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-                        <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-                    </svg>
-                    <span class="notif-dot"></span>
+            <div class="flex items-center gap-2">
+                <div class="relative hidden md:block">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 text-xs"></i>
+                    <input type="text" placeholder="Search tasks..."
+                        class="bg-gray-100 dark:bg-[#131916] border border-gray-200 dark:border-[#1f2622] text-sm text-gray-800 dark:text-gray-300 placeholder-gray-400 dark:placeholder-gray-600 rounded-xl pl-8 pr-3 py-1.5 w-52 focus:outline-none focus:border-lime-500 dark:focus:border-[#ccff00] transition">
+                </div>
+                <button class="w-8 h-8 rounded-xl bg-gray-100 dark:bg-[#131916] border border-gray-200 dark:border-[#1f2622] flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition relative">
+                    <i class="fa-regular fa-bell text-sm"></i>
+                    <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-[#ccff00] rounded-full"></span>
                 </button>
-                <button class="icon-btn" title="Toggle theme">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5" />
-                        <line x1="12" y1="1" x2="12" y2="3" />
-                        <line x1="12" y1="21" x2="12" y2="23" />
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                        <line x1="1" y1="12" x2="3" y2="12" />
-                        <line x1="21" y1="12" x2="23" y2="12" />
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-                    </svg>
+                <!-- TOGGLE DARK/LIGHT -->
+                <button id="theme-toggle" type="button"
+                    class="w-8 h-8 rounded-xl bg-gray-100 dark:bg-[#131916] border border-gray-200 dark:border-[#1f2622] flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition"
+                    title="Toggle Dark/Light Mode">
+                    <i class="fa-regular fa-sun  text-sm hidden dark:block"></i>
+                    <i class="fa-regular fa-moon text-sm block  dark:hidden"></i>
                 </button>
-                <button class="icon-btn" title="Help">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10" />
-                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                        <line x1="12" y1="17" x2="12.01" y2="17" />
-                    </svg>
+                <button class="w-8 h-8 rounded-xl bg-gray-100 dark:bg-[#131916] border border-gray-200 dark:border-[#1f2622] flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">
+                    <i class="fa-regular fa-circle-question text-sm"></i>
                 </button>
-                <div class="avatar-sm color-d" title="{{ session('user')->name ?? session('user')->nama ?? 'User' }}">
-                    {{ strtoupper(substr(session('user')->name ?? session('user')->nama ?? 'U', 0, 2)) }}
+                <div class="w-8 h-8 rounded-xl overflow-hidden border-2 border-[#ccff00]/50 ml-1 flex-shrink-0">
+                    <img src="https://i.pravatar.cc/100?img=33" alt="Avatar" class="w-full h-full object-cover">
                 </div>
             </div>
         </header>
 
-        <!-- ─── BOARD AREA ─── -->
-        <div class="board-area">
-
-            <div class="board-header">
-                <div>
-                    <h1 class="board-title">Q4 Marketing Campaign</h1>
-                    <p class="board-subtitle">Manage deliverables and assets for the upcoming launch.</p>
-                </div>
-                <div class="board-header-right">
-                    <div class="avatar-group">
-                        <div class="avatar-sm color-a">JR</div>
-                        <div class="avatar-sm color-b">SK</div>
-                        <div class="avatar-sm color-c">ML</div>
-                        <div class="avatar-more">+3</div>
-                    </div>
-                    <button class="filter-btn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
-                        </svg>
-                        Filter
+        <!-- BOARD HEADER -->
+        <div class="px-6 pt-5 pb-4 flex items-start justify-between flex-shrink-0 border-b border-gray-200 dark:border-[#1f2622] bg-white dark:bg-[#0e100f] transition-colors duration-200">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white leading-tight tracking-tight">Q4 Marketing Campaign</h1>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">Manage deliverables and assets for the upcoming launch.</p>
+                <div class="flex items-center gap-1 mt-4">
+                    <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-200 dark:bg-[#131916] text-gray-900 dark:text-white text-xs font-semibold">
+                        <i class="fa-solid fa-table-columns"></i> Board
+                    </button>
+                    <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-[#131916] text-xs font-medium transition">
+                        <i class="fa-solid fa-list"></i> List
+                    </button>
+                    <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-[#131916] text-xs font-medium transition">
+                        <i class="fa-regular fa-calendar"></i> Timeline
                     </button>
                 </div>
             </div>
+            <div class="flex items-center gap-3 mt-1">
+                <div class="flex items-center">
+                    <div class="w-7 h-7 rounded-full bg-purple-100 dark:bg-[#3b2a4a] text-purple-700 dark:text-purple-400 text-[10px] font-bold flex items-center justify-center border-2 border-white dark:border-[#0e100f]">JR</div>
+                    <div class="w-7 h-7 rounded-full bg-emerald-100 dark:bg-[#1a3a2a] text-emerald-700 dark:text-emerald-400 text-[10px] font-bold flex items-center justify-center border-2 border-white dark:border-[#0e100f] -ml-2">SK</div>
+                    <div class="w-7 h-7 rounded-full bg-violet-100 dark:bg-[#2a1a3a] text-violet-700 dark:text-violet-400 text-[10px] font-bold flex items-center justify-center border-2 border-white dark:border-[#0e100f] -ml-2">ML</div>
+                    <div class="w-7 h-7 rounded-full bg-gray-200 dark:bg-[#222] text-gray-600 dark:text-gray-400 text-[10px] font-bold flex items-center justify-center border-2 border-white dark:border-[#0e100f] -ml-2">+3</div>
+                </div>
+                <button class="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-gray-200 dark:border-[#1f2622] bg-white dark:bg-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-xs font-medium transition">
+                    <i class="fa-solid fa-filter text-[11px]"></i> Filter
+                </button>
+                <button class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#ccff00] text-black text-xs font-semibold hover:bg-[#b8e600] transition shadow-sm">
+                    <i class="fa-solid fa-plus text-[11px]"></i> Add Task
+                </button>
+            </div>
+        </div>
 
-            <!-- ─── KANBAN COLUMNS ─── -->
-            <div class="columns-wrapper">
+        <!-- KANBAN COLUMNS -->
+        <div class="flex-1 overflow-hidden bg-gray-50 dark:bg-[#0e100f] transition-colors duration-200">
+            <div class="flex gap-4 px-6 py-5 h-full overflow-x-auto board-scroll">
 
-                <!-- ══ TO DO ══ -->
-                <div class="column">
-                    <div class="column-header">
-                        <div class="col-header-left">
-                            <span class="col-dot dot-gray"></span>
-                            <span class="col-title">To Do</span>
-                            <span class="col-count">3</span>
+                <!-- TO DO -->
+                <div class="w-72 min-w-[288px] flex flex-col bg-white dark:bg-[#111210] border border-gray-200 dark:border-[#1f2622] rounded-2xl overflow-hidden flex-shrink-0">
+                    <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-[#1f2622]">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-500"></span>
+                            <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">To Do</span>
+                            <span class="bg-gray-100 dark:bg-[#252525] text-gray-500 dark:text-gray-400 text-[11px] font-semibold px-2 py-0.5 rounded-full border border-gray-200 dark:border-[#1f2622]">3</span>
                         </div>
-                        <button class="col-more">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="5" cy="12" r="1" />
-                                <circle cx="12" cy="12" r="1" />
-                                <circle cx="19" cy="12" r="1" />
-                            </svg>
+                        <button class="w-6 h-6 flex items-center justify-center rounded-lg text-gray-400 dark:text-gray-600 hover:bg-gray-100 dark:hover:bg-[#1f2622] hover:text-gray-700 dark:hover:text-gray-300 transition">
+                            <i class="fa-solid fa-ellipsis text-xs"></i>
                         </button>
                     </div>
-                    <div class="column-cards">
+                    <div class="flex-1 overflow-y-auto col-scroll px-3 py-3 flex flex-col gap-3">
                         <!-- Card 1 -->
-                        <div class="card">
-                            <div class="card-top">
-                                <div class="card-badges"><span class="badge badge-high">HIGH</span></div>
-                                <span class="card-id">#PRO-102</span>
+                        <div class="task-card bg-gray-50 dark:bg-[#161816] border border-gray-200 dark:border-[#282828] hover:border-gray-300 dark:hover:border-[#3a3a3a] hover:shadow-md dark:hover:shadow-none rounded-xl p-3.5 cursor-pointer">
+                            <div class="flex items-center justify-between mb-2.5">
+                                <span class="badge-high text-[10px] font-bold px-2 py-0.5 rounded tracking-wide uppercase">HIGH</span>
+                                <span class="text-[11px] text-gray-400 dark:text-[#5a5a5a] font-mono">#PRO-102</span>
                             </div>
-                            <div class="card-title">Draft initial landing page copy</div>
-                            <div class="card-desc">Create the hero section and feature highlights for the main product</div>
-                            <div class="card-footer">
-                                <div class="card-meta">
-                                    <span class="meta-item">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                                        </svg>
-                                        2
-                                    </span>
-                                    <span class="meta-item">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                                            <circle cx="12" cy="12" r="3" />
-                                        </svg>
-                                        1
-                                    </span>
+                            <p class="text-sm font-semibold text-gray-800 dark:text-[#e8ead4] leading-snug mb-2">Draft initial landing page copy</p>
+                            <p class="text-xs text-gray-500 dark:text-[#6b7280] line-clamp-2 mb-3">Create the hero section and feature highlights for the main product page.</p>
+                            <div class="flex items-center justify-between pt-2.5 border-t border-gray-100 dark:border-[#222]">
+                                <div class="flex items-center gap-3 text-gray-400 dark:text-[#5a5a5a] text-[11px]">
+                                    <span class="flex items-center gap-1"><i class="fa-regular fa-comment text-[10px]"></i> 2</span>
+                                    <span class="flex items-center gap-1"><i class="fa-regular fa-eye text-[10px]"></i> 1</span>
                                 </div>
-                                <div class="card-avatars">
-                                    <div class="avatar-sm color-e">TK</div>
-                                </div>
+                                <div class="w-6 h-6 rounded-full bg-orange-100 dark:bg-[#3a2a1a] text-orange-600 dark:text-orange-400 text-[9px] font-bold flex items-center justify-center">TK</div>
                             </div>
                         </div>
                         <!-- Card 2 -->
-                        <div class="card">
-                            <div class="card-top">
-                                <div class="card-badges"><span class="badge badge-medium">MEDIUM</span></div>
-                                <span class="card-id">#PRO-105</span>
+                        <div class="task-card bg-gray-50 dark:bg-[#161816] border border-gray-200 dark:border-[#282828] hover:border-gray-300 dark:hover:border-[#3a3a3a] hover:shadow-md dark:hover:shadow-none rounded-xl p-3.5 cursor-pointer">
+                            <div class="flex items-center justify-between mb-2.5">
+                                <span class="badge-medium text-[10px] font-bold px-2 py-0.5 rounded tracking-wide uppercase">MEDIUM</span>
+                                <span class="text-[11px] text-gray-400 dark:text-[#5a5a5a] font-mono">#PRO-105</span>
                             </div>
-                            <div class="card-title">Source stock images for<br>ad creatives</div>
-                            <div class="card-footer">
-                                <div class="card-meta">
-                                    <span class="meta-item">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                                        </svg>
-                                        0
-                                    </span>
-                                </div>
-                                <div class="card-avatars">
-                                    <div class="avatar-sm color-b">SK</div>
-                                </div>
+                            <p class="text-sm font-semibold text-gray-800 dark:text-[#e8ead4] leading-snug mb-3">Source stock images for ad creatives</p>
+                            <div class="flex items-center justify-between pt-2.5 border-t border-gray-100 dark:border-[#222]">
+                                <span class="flex items-center gap-1 text-gray-400 dark:text-[#5a5a5a] text-[11px]"><i class="fa-regular fa-comment text-[10px]"></i> 0</span>
+                                <div class="w-6 h-6 rounded-full bg-emerald-100 dark:bg-[#1a3a2a] text-emerald-600 dark:text-emerald-400 text-[9px] font-bold flex items-center justify-center">SK</div>
+                            </div>
+                        </div>
+                        <!-- Card 3 -->
+                        <div class="task-card bg-gray-50 dark:bg-[#161816] border border-gray-200 dark:border-[#282828] hover:border-gray-300 dark:hover:border-[#3a3a3a] hover:shadow-md dark:hover:shadow-none rounded-xl p-3.5 cursor-pointer">
+                            <div class="flex items-center justify-between mb-2.5">
+                                <span class="badge-low text-[10px] font-bold px-2 py-0.5 rounded tracking-wide uppercase">LOW</span>
+                                <span class="text-[11px] text-gray-400 dark:text-[#5a5a5a] font-mono">#PRO-109</span>
+                            </div>
+                            <p class="text-sm font-semibold text-gray-800 dark:text-[#e8ead4] leading-snug mb-3">Setup newsletter subscription form</p>
+                            <div class="flex items-center justify-between pt-2.5 border-t border-gray-100 dark:border-[#222]">
+                                <span class="flex items-center gap-1 text-gray-400 dark:text-[#5a5a5a] text-[11px]"><i class="fa-regular fa-comment text-[10px]"></i> 1</span>
+                                <div class="w-6 h-6 rounded-full bg-blue-100 dark:bg-[#2d4a6b] text-blue-600 dark:text-blue-300 text-[9px] font-bold flex items-center justify-center">JR</div>
                             </div>
                         </div>
                     </div>
-                    <button class="add-task-btn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="12" y1="5" x2="12" y2="19" />
-                            <line x1="5" y1="12" x2="19" y2="12" />
-                        </svg>
-                        Add Task
+                    <button class="mx-3 mb-3 flex items-center justify-center gap-2 py-2 border border-dashed border-gray-300 dark:border-[#2d2d2d] rounded-xl text-gray-400 dark:text-[#5a5a5a] hover:text-gray-600 dark:hover:text-gray-400 hover:border-gray-400 dark:hover:border-[#3a3a3a] text-xs font-medium transition bg-transparent">
+                        <i class="fa-solid fa-plus text-[10px]"></i> Add Task
                     </button>
                 </div>
 
-                <!-- ══ IN PROGRESS ══ -->
-                <div class="column">
-                    <div class="column-header">
-                        <div class="col-header-left">
-                            <span class="col-dot dot-lime"></span>
-                            <span class="col-title">In Progress</span>
-                            <span class="col-count">2</span>
+                <!-- IN PROGRESS -->
+                <div class="w-72 min-w-[288px] flex flex-col bg-white dark:bg-[#111210] border border-gray-200 dark:border-[#1f2622] rounded-2xl overflow-hidden flex-shrink-0">
+                    <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-[#1f2622]">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                            <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">In Progress</span>
+                            <span class="bg-gray-100 dark:bg-[#252525] text-gray-500 dark:text-gray-400 text-[11px] font-semibold px-2 py-0.5 rounded-full border border-gray-200 dark:border-[#1f2622]">2</span>
                         </div>
-                        <button class="col-more">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="5" cy="12" r="1" />
-                                <circle cx="12" cy="12" r="1" />
-                                <circle cx="19" cy="12" r="1" />
-                            </svg>
+                        <button class="w-6 h-6 flex items-center justify-center rounded-lg text-gray-400 dark:text-gray-600 hover:bg-gray-100 dark:hover:bg-[#1f2622] hover:text-gray-700 dark:hover:text-gray-300 transition">
+                            <i class="fa-solid fa-ellipsis text-xs"></i>
                         </button>
                     </div>
-                    <div class="column-cards">
+                    <div class="flex-1 overflow-y-auto col-scroll px-3 py-3 flex flex-col gap-3">
                         <!-- Card 1 -->
-                        <div class="card">
-                            <div class="card-top">
-                                <div class="card-badges"><span class="badge badge-high">HIGH</span></div>
-                                <span class="card-id">#PRO-098</span>
+                        <div class="task-card bg-gray-50 dark:bg-[#161816] border border-gray-200 dark:border-[#282828] hover:border-gray-300 dark:hover:border-[#3a3a3a] hover:shadow-md dark:hover:shadow-none rounded-xl p-3.5 cursor-pointer">
+                            <div class="flex items-center justify-between mb-2.5">
+                                <span class="badge-high text-[10px] font-bold px-2 py-0.5 rounded tracking-wide uppercase">HIGH</span>
+                                <span class="text-[11px] text-gray-400 dark:text-[#5a5a5a] font-mono">#PRO-098</span>
                             </div>
-                            <div class="card-title">Design UI mockups for mobile app</div>
-                            <div class="progress-wrap">
-                                <div class="progress-bar-bg">
-                                    <div class="progress-bar-fill" style="width:60%"></div>
+                            <p class="text-sm font-semibold text-gray-800 dark:text-[#e8ead4] leading-snug mb-2.5">Design UI mockups for mobile app</p>
+                            <div class="mb-2.5">
+                                <div class="flex justify-between text-[11px] text-gray-400 dark:text-[#5a5a5a] mb-1.5">
+                                    <span><i class="fa-solid fa-check text-[9px]"></i> 3/5 subtasks</span>
+                                    <span class="font-medium text-gray-600 dark:text-gray-400">60%</span>
+                                </div>
+                                <div class="w-full h-1.5 bg-gray-200 dark:bg-[#2a2a2a] rounded-full overflow-hidden">
+                                    <div class="h-full bg-[#ccff00] rounded-full" style="width:60%"></div>
                                 </div>
                             </div>
-                            <div class="subtask-info">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="9 11 12 14 22 4" />
-                                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
-                                </svg>
-                                3/5 <span class="subtask-extra">+1</span>
+                            <div class="flex items-center justify-between pt-2.5 border-t border-gray-100 dark:border-[#222]">
+                                <div class="flex items-center gap-3 text-gray-400 dark:text-[#5a5a5a] text-[11px]">
+                                    <span class="flex items-center gap-1"><i class="fa-regular fa-comment text-[10px]"></i> 4</span>
+                                    <span class="flex items-center gap-1"><i class="fa-regular fa-clock text-[10px]"></i> Oct 21</span>
+                                </div>
+                                <div class="w-6 h-6 rounded-full bg-purple-100 dark:bg-[#3b2a4a] text-purple-600 dark:text-purple-400 text-[9px] font-bold flex items-center justify-center">JR</div>
                             </div>
-                            <div class="card-footer">
-                                <div class="card-meta"></div>
-                                <div class="card-avatars">
-                                    <div class="avatar-sm color-a">JR</div>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="task-card bg-gray-50 dark:bg-[#161816] border border-gray-200 dark:border-[#282828] hover:border-gray-300 dark:hover:border-[#3a3a3a] hover:shadow-md dark:hover:shadow-none rounded-xl p-3.5 cursor-pointer">
+                            <div class="flex items-center justify-between mb-2.5">
+                                <span class="badge-low text-[10px] font-bold px-2 py-0.5 rounded tracking-wide uppercase">LOW</span>
+                                <span class="text-[11px] text-gray-400 dark:text-[#5a5a5a] font-mono">#PRO-101</span>
+                            </div>
+                            <p class="text-sm font-semibold text-gray-800 dark:text-[#e8ead4] leading-snug mb-2.5">Update branding guidelines PDF</p>
+                            <div class="mb-2.5">
+                                <div class="flex justify-between text-[11px] text-gray-400 dark:text-[#5a5a5a] mb-1.5">
+                                    <span><i class="fa-solid fa-check text-[9px]"></i> 1/3 subtasks</span>
+                                    <span class="font-medium text-gray-600 dark:text-gray-400">33%</span>
+                                </div>
+                                <div class="w-full h-1.5 bg-gray-200 dark:bg-[#2a2a2a] rounded-full overflow-hidden">
+                                    <div class="h-full bg-[#ccff00] rounded-full" style="width:33%"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between pt-2.5 border-t border-gray-100 dark:border-[#222]">
+                                <span class="flex items-center gap-1 text-gray-400 dark:text-[#5a5a5a] text-[11px]"><i class="fa-regular fa-comment text-[10px]"></i> 0</span>
+                                <div class="w-6 h-6 rounded-full bg-violet-100 dark:bg-[#2a1a3a] text-violet-600 dark:text-violet-400 text-[9px] font-bold flex items-center justify-center">ML</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="mx-3 mb-3 flex items-center justify-center gap-2 py-2 border border-dashed border-gray-300 dark:border-[#2d2d2d] rounded-xl text-gray-400 dark:text-[#5a5a5a] hover:text-gray-600 dark:hover:text-gray-400 hover:border-gray-400 dark:hover:border-[#3a3a3a] text-xs font-medium transition bg-transparent">
+                        <i class="fa-solid fa-plus text-[10px]"></i> Add Task
+                    </button>
+                </div>
+
+                <!-- REVIEW -->
+                <div class="w-72 min-w-[288px] flex flex-col bg-white dark:bg-[#111210] border border-gray-200 dark:border-[#1f2622] rounded-2xl overflow-hidden flex-shrink-0">
+                    <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-[#1f2622]">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-violet-500"></span>
+                            <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">Review</span>
+                            <span class="bg-gray-100 dark:bg-[#252525] text-gray-500 dark:text-gray-400 text-[11px] font-semibold px-2 py-0.5 rounded-full border border-gray-200 dark:border-[#1f2622]">2</span>
+                        </div>
+                        <button class="w-6 h-6 flex items-center justify-center rounded-lg text-gray-400 dark:text-gray-600 hover:bg-gray-100 dark:hover:bg-[#1f2622] hover:text-gray-700 dark:hover:text-gray-300 transition">
+                            <i class="fa-solid fa-ellipsis text-xs"></i>
+                        </button>
+                    </div>
+                    <div class="flex-1 overflow-y-auto col-scroll px-3 py-3 flex flex-col gap-3">
+                        <!-- Card 1 -->
+                        <div class="task-card bg-gray-50 dark:bg-[#161816] border border-gray-200 dark:border-[#282828] hover:border-gray-300 dark:hover:border-[#3a3a3a] hover:shadow-md dark:hover:shadow-none rounded-xl p-3.5 cursor-pointer">
+                            <div class="flex items-center justify-between mb-2.5">
+                                <span class="badge-medium text-[10px] font-bold px-2 py-0.5 rounded tracking-wide uppercase">MEDIUM</span>
+                                <span class="text-[11px] text-gray-400 dark:text-[#5a5a5a] font-mono">#PRO-085</span>
+                            </div>
+                            <p class="text-sm font-semibold text-gray-800 dark:text-[#e8ead4] leading-snug mb-2">Finalize Q3 Analytics Report</p>
+                            <p class="text-xs text-gray-500 dark:text-[#6b7280] line-clamp-2 mb-2">Awaiting final approval from the marketing director before publishing.</p>
+                            <div class="flex items-center gap-1.5 mb-3">
+                                <span class="flex items-center gap-1 bg-red-50 dark:bg-red-900/20 text-red-500 dark:text-red-400 text-[10px] font-semibold px-2 py-0.5 rounded border border-red-200 dark:border-red-800/30">
+                                    <i class="fa-regular fa-calendar-xmark text-[9px]"></i> Due Today
+                                </span>
+                            </div>
+                            <div class="flex items-center justify-between pt-2.5 border-t border-gray-100 dark:border-[#222]">
+                                <span class="flex items-center gap-1 text-gray-400 dark:text-[#5a5a5a] text-[11px]"><i class="fa-regular fa-comment text-[10px]"></i> 3</span>
+                                <div class="flex items-center">
+                                    <div class="w-6 h-6 rounded-full bg-emerald-100 dark:bg-[#1a3a2a] text-emerald-600 dark:text-emerald-400 text-[9px] font-bold flex items-center justify-center border-2 border-white dark:border-[#161816]">SK</div>
+                                    <div class="w-6 h-6 rounded-full bg-purple-100 dark:bg-[#3b2a4a] text-purple-600 dark:text-purple-400 text-[9px] font-bold flex items-center justify-center border-2 border-white dark:border-[#161816] -ml-2">JR</div>
                                 </div>
                             </div>
                         </div>
                         <!-- Card 2 -->
-                        <div class="card">
-                            <div class="card-top">
-                                <div class="card-badges"><span class="badge badge-low">LOW</span></div>
-                                <span class="card-id">#PRO-101</span>
+                        <div class="task-card bg-gray-50 dark:bg-[#161816] border border-gray-200 dark:border-[#282828] hover:border-gray-300 dark:hover:border-[#3a3a3a] hover:shadow-md dark:hover:shadow-none rounded-xl p-3.5 cursor-pointer">
+                            <div class="flex items-center justify-between mb-2.5">
+                                <span class="badge-high text-[10px] font-bold px-2 py-0.5 rounded tracking-wide uppercase">HIGH</span>
+                                <span class="text-[11px] text-gray-400 dark:text-[#5a5a5a] font-mono">#PRO-091</span>
                             </div>
-                            <div class="card-title">Update branding guidelines PDF</div>
-                            <div class="card-footer">
-                                <div class="card-meta"></div>
-                                <div class="card-avatars">
-                                    <div class="avatar-sm color-c">ML</div>
+                            <p class="text-sm font-semibold text-gray-800 dark:text-[#e8ead4] leading-snug mb-3">A/B test email subject lines</p>
+                            <div class="flex items-center justify-between pt-2.5 border-t border-gray-100 dark:border-[#222]">
+                                <div class="flex items-center gap-3 text-gray-400 dark:text-[#5a5a5a] text-[11px]">
+                                    <span class="flex items-center gap-1"><i class="fa-regular fa-comment text-[10px]"></i> 1</span>
+                                    <span class="flex items-center gap-1"><i class="fa-regular fa-clock text-[10px]"></i> Oct 24</span>
                                 </div>
+                                <div class="w-6 h-6 rounded-full bg-violet-100 dark:bg-[#2a1a3a] text-violet-600 dark:text-violet-400 text-[9px] font-bold flex items-center justify-center">ML</div>
                             </div>
                         </div>
                     </div>
+                    <button class="mx-3 mb-3 flex items-center justify-center gap-2 py-2 border border-dashed border-gray-300 dark:border-[#2d2d2d] rounded-xl text-gray-400 dark:text-[#5a5a5a] hover:text-gray-600 dark:hover:text-gray-400 hover:border-gray-400 dark:hover:border-[#3a3a3a] text-xs font-medium transition bg-transparent">
+                        <i class="fa-solid fa-plus text-[10px]"></i> Add Task
+                    </button>
                 </div>
 
-                <!-- ══ REVIEW ══ -->
-                <div class="column">
-                    <div class="column-header">
-                        <div class="col-header-left">
-                            <span class="col-dot dot-purple"></span>
-                            <span class="col-title">Review</span>
-                            <span class="col-count">1</span>
+                <!-- DONE -->
+                <div class="w-72 min-w-[288px] flex flex-col bg-white dark:bg-[#111210] border border-gray-200 dark:border-[#1f2622] rounded-2xl overflow-hidden flex-shrink-0">
+                    <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-[#1f2622]">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-[#ccff00]"></span>
+                            <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">Done</span>
+                            <span class="bg-gray-100 dark:bg-[#252525] text-gray-500 dark:text-gray-400 text-[11px] font-semibold px-2 py-0.5 rounded-full border border-gray-200 dark:border-[#1f2622]">2</span>
                         </div>
-                        <button class="col-more">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="5" cy="12" r="1" />
-                                <circle cx="12" cy="12" r="1" />
-                                <circle cx="19" cy="12" r="1" />
-                            </svg>
+                        <button class="w-6 h-6 flex items-center justify-center rounded-lg text-gray-400 dark:text-gray-600 hover:bg-gray-100 dark:hover:bg-[#1f2622] hover:text-gray-700 dark:hover:text-gray-300 transition">
+                            <i class="fa-solid fa-ellipsis text-xs"></i>
                         </button>
                     </div>
-                    <div class="column-cards">
-                        <div class="card">
-                            <div class="card-top">
-                                <div class="card-badges"><span class="badge badge-medium">MEDIUM</span></div>
-                                <span class="card-id">#PRO-085</span>
+                    <div class="flex-1 overflow-y-auto col-scroll px-3 py-3 flex flex-col gap-3">
+                        <!-- Card 1 -->
+                        <div class="task-card bg-gray-50 dark:bg-[#161816] border border-gray-200 dark:border-[#282828] hover:border-gray-300 dark:hover:border-[#3a3a3a] hover:shadow-md dark:hover:shadow-none rounded-xl p-3.5 cursor-pointer opacity-75">
+                            <div class="flex items-center justify-between mb-2.5">
+                                <span class="text-[11px] text-gray-400 dark:text-[#5a5a5a] font-mono">#PRO-072</span>
+                                <span class="flex items-center gap-1 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 text-[10px] font-semibold px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800/30">
+                                    <i class="fa-solid fa-check text-[9px]"></i> Done
+                                </span>
                             </div>
-                            <div class="card-title">Finalize Q3 Analytics Report</div>
-                            <div class="card-desc">Awaiting final approval from the marketing director before...</div>
-                            <div class="due-today">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                                    <line x1="16" y1="2" x2="16" y2="6" />
-                                    <line x1="8" y1="2" x2="8" y2="6" />
-                                    <line x1="3" y1="10" x2="21" y2="10" />
-                                </svg>
-                                Due Today
+                            <p class="text-sm font-semibold text-gray-500 dark:text-gray-500 leading-snug mb-3 line-through">Setup email campaign automation</p>
+                            <div class="flex items-center justify-between pt-2.5 border-t border-gray-100 dark:border-[#222]">
+                                <div class="flex items-center gap-3 text-gray-400 dark:text-[#5a5a5a] text-[11px]">
+                                    <span class="flex items-center gap-1"><i class="fa-regular fa-comment text-[10px]"></i> 5</span>
+                                    <span class="flex items-center gap-1"><i class="fa-regular fa-clock text-[10px]"></i> Oct 15</span>
+                                </div>
+                                <div class="w-6 h-6 rounded-full bg-blue-100 dark:bg-[#2d4a6b] text-blue-600 dark:text-blue-300 text-[9px] font-bold flex items-center justify-center">JR</div>
                             </div>
-                            <div class="card-footer">
-                                <div class="card-meta"></div>
-                                <span class="review-count">1</span>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="task-card bg-gray-50 dark:bg-[#161816] border border-gray-200 dark:border-[#282828] hover:border-gray-300 dark:hover:border-[#3a3a3a] hover:shadow-md dark:hover:shadow-none rounded-xl p-3.5 cursor-pointer opacity-75">
+                            <div class="flex items-center justify-between mb-2.5">
+                                <span class="text-[11px] text-gray-400 dark:text-[#5a5a5a] font-mono">#PRO-068</span>
+                                <span class="flex items-center gap-1 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 text-[10px] font-semibold px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800/30">
+                                    <i class="fa-solid fa-check text-[9px]"></i> Done
+                                </span>
+                            </div>
+                            <p class="text-sm font-semibold text-gray-500 dark:text-gray-500 leading-snug mb-3 line-through">Define target audience personas</p>
+                            <div class="flex items-center justify-between pt-2.5 border-t border-gray-100 dark:border-[#222]">
+                                <div class="flex items-center gap-3 text-gray-400 dark:text-[#5a5a5a] text-[11px]">
+                                    <span class="flex items-center gap-1"><i class="fa-regular fa-comment text-[10px]"></i> 2</span>
+                                    <span class="flex items-center gap-1"><i class="fa-regular fa-clock text-[10px]"></i> Oct 10</span>
+                                </div>
+                                <div class="w-6 h-6 rounded-full bg-emerald-100 dark:bg-[#1a3a2a] text-emerald-600 dark:text-emerald-400 text-[9px] font-bold flex items-center justify-center">SK</div>
                             </div>
                         </div>
                     </div>
+                    <button class="mx-3 mb-3 flex items-center justify-center gap-2 py-2 border border-dashed border-gray-300 dark:border-[#2d2d2d] rounded-xl text-gray-400 dark:text-[#5a5a5a] hover:text-gray-600 dark:hover:text-gray-400 hover:border-gray-400 dark:hover:border-[#3a3a3a] text-xs font-medium transition bg-transparent">
+                        <i class="fa-solid fa-plus text-[10px]"></i> Add Task
+                    </button>
                 </div>
 
-                <!-- ══ DONE ══ -->
-                <div class="column">
-                    <div class="column-header">
-                        <div class="col-header-left">
-                            <span class="col-dot dot-green"></span>
-                            <span class="col-title">Done</span>
-                            <span class="col-count">1</span>
-                        </div>
-                        <button class="col-more">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="5" cy="12" r="1" />
-                                <circle cx="12" cy="12" r="1" />
-                                <circle cx="19" cy="12" r="1" />
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="column-cards">
-                        <div class="card">
-                            <div class="card-top">
-                                <div class="card-badges"></div>
-                                <span class="card-id">#PRO-072</span>
-                            </div>
-                            <div class="card-title">Setup email campaign automation</div>
-                            <div class="badge-completed">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12" />
-                                </svg>
-                                Completed
-                            </div>
-                        </div>
-                    </div>
+                <!-- ADD STATUS -->
+                <div class="w-72 min-w-[288px] flex-shrink-0">
+                    <button class="w-full h-14 flex items-center justify-center gap-2 border-2 border-dashed border-gray-300 dark:border-[#2a2a2a] rounded-2xl text-gray-400 dark:text-[#5a5a5a] hover:text-gray-600 dark:hover:text-gray-400 hover:border-gray-400 dark:hover:border-[#3a3a3a] font-medium text-sm transition bg-transparent">
+                        <i class="fa-solid fa-plus text-xs"></i> Add Status
+                    </button>
                 </div>
 
-            </div><!-- end columns-wrapper -->
-        </div><!-- end board-area -->
-    </div><!-- end main -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT TEMA -->
+    <script>
+        document.getElementById('theme-toggle').addEventListener('click', function () {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+    </script>
 
 </body>
-
 </html>
