@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
-
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckRole;
 use App\Http\Controllers\ProjectController;
@@ -18,13 +18,7 @@ Route::get('/projects', [ProjectController::class, 'index'])->name('projects.ind
 Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
 Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
 Route::get('/projects/{id}', [ProjectController::class, 'show'])->name('projects.show');
-
-Route::get('/dashboard', function () {
-    if (!session('user')) {
-        return redirect('/login');
-    }
-    return view('dashboard');
-});
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::get('/board', function () {
     if (!session('user')) {

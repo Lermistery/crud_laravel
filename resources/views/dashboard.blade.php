@@ -139,7 +139,7 @@
                         <i class="fa-regular fa-folder text-lg text-gray-400"></i>
                     </div>
                     <div class="mt-4">
-                        <h3 class="text-3xl font-bold text-white">24</h3>
+                        <h3 class="text-3xl font-bold text-white">{{ $totalProjects }}</h3>
                         <p class="text-xs text-neon font-medium mt-1">+2 this mo</p>
                     </div>
                 </div>
@@ -151,7 +151,7 @@
                         <i class="fa-regular fa-square-check text-lg text-gray-400"></i>
                     </div>
                     <div class="mt-4">
-                        <h3 class="text-3xl font-bold text-white">156</h3>
+                        <h3 class="text-3xl font-bold text-white">{{ $activeTasks }}</h3>
                         <p class="text-xs text-neon font-medium mt-1">+14% vs last wk</p>
                     </div>
                 </div>
@@ -163,7 +163,7 @@
                         <i class="fa-solid fa-layer-group text-lg text-gray-400"></i>
                     </div>
                     <div class="mt-4">
-                        <h3 class="text-3xl font-bold text-white">89</h3>
+                        <h3 class="text-3xl font-bold text-white">{{ $completedTasks }}</h3>
                         <p class="text-xs text-neon font-medium mt-1">82% target</p>
                     </div>
                 </div>
@@ -175,7 +175,7 @@
                         <i class="fa-solid fa-triangle-exclamation text-lg text-gray-400"></i>
                     </div>
                     <div class="mt-4">
-                        <h3 class="text-3xl font-bold text-white">12</h3>
+                        <h3 class="text-3xl font-bold text-white">{{ $overdueTasks }}</h3>
                         <p class="text-xs text-rose-500 font-medium mt-1">+3 since yesterday</p>
                     </div>
                 </div>
@@ -187,7 +187,7 @@
                         <i class="fa-regular fa-user text-lg text-gray-400"></i>
                     </div>
                     <div class="mt-4">
-                        <h3 class="text-3xl font-bold text-white">18</h3>
+                        <h3 class="text-3xl font-bold text-white">{{ $teamMembers }}</h3>
                         <p class="text-xs text-neon font-medium mt-1">3 teams</p>
                     </div>
                 </div>
